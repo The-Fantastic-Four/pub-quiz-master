@@ -1,5 +1,6 @@
-package hbv2.hi.is.pubquiz;
+package is.hi.hbv601.pubquiz;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
@@ -135,12 +136,8 @@ public class PubQuiz_Fragment extends Fragment{
         protected void onPostExecute(Object o) {
             super.onPostExecute( o );
 
-            try {
-                JSONObject jsonObject = new JSONObject( (String) o );
-                //questionNumber.setText( "" + jsonObject.getInt( "question_number" ) );
-            } catch (JSONException exc) {
-                exc.printStackTrace();
-            }
+            Intent answerQuestionIntent = new Intent(PubQuiz_Fragment.this.getActivity(), AnswerQuestionActivity.class);
+            startActivity(answerQuestionIntent);
         }
     }
 }

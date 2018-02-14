@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
 // activity class to link with fragment container
-public class PubQuiz_activity extends SingleFragmentActivity  {
+public class PubQuizActivity extends SingleFragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,6 +1,4 @@
-package hbv2.hi.is.pubquiz;
-
-import org.json.JSONObject;
+package is.hi.hbv601.pubquiz;
 
 import java.io.IOException;
 import okhttp3.MediaType;
@@ -8,7 +6,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import java.lang.AutoCloseable;
+
 /**
  * Created by ${Fannar} on 13.2.2018.
  */

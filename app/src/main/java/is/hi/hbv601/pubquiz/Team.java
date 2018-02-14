@@ -1,4 +1,4 @@
-package hbv2.hi.is.pubquiz;
+package is.hi.hbv601.pubquiz;
 
 /**
  * Created by Fannar on 9.2.2018.

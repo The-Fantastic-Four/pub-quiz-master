@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="hbv2.hi.is.pubquiz.PubQuiz_activity">
+    tools:context="is.hi.hbv601.pubquiz.hbv2.hi.hbv601.pubquiz.PubQuiz_activity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

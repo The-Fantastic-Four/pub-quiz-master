@@ -1,11 +1,15 @@
-package is.hi.hbv601.pubquiz;
+package hbv2.hi.is.pubquiz;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 
-// activity class to link with fragment container
-public class PubQuiz_activity extends SingleFragmentActivity  {
+/**
+ * Created by ${Fannar} on 14.2.2018.
+ */
+
+public abstract class SingleFragmentActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,16 +20,12 @@ public class PubQuiz_activity extends SingleFragmentActivity  {
 
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
         if (fragment == null) {
-            fragment = new PubQuiz_Fragment();
+            fragment = createFragment();
             fm.beginTransaction()
                     .add(R.id.fragment_container, fragment) // FrameLayout
                     .commit();
         }
-
     }
-    @Override
-    protected Fragment createFragment() {
-        return new PubQuiz_Fragment();
-    }
+    protected abstract Fragment createFragment();
 
 }

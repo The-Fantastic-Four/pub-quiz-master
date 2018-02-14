@@ -4,6 +4,7 @@ package hbv2.hi.is.pubquiz;
  * Created by Fannar on 9.2.2018.
  */
 
+//Model class for Team
 public class Team {
 
     private String teamName;

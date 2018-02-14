@@ -1,5 +1,7 @@
 package hbv2.hi.is.pubquiz;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -16,9 +18,6 @@ public class JsonPost {
                 = MediaType.parse("application/json; charset=utf-8");
 
         OkHttpClient tclient = new OkHttpClient();
-        Response response = null;
-
-
 
         String post(String url, String json) throws IOException {
             RequestBody body = RequestBody.create(JSON, json);
@@ -26,9 +25,8 @@ public class JsonPost {
                     .url(url)
                     .post(body)
                     .build();
-            try (Response response = tclient.newCall( request).execute()){
+            Response response = tclient.newCall( request).execute();
                 return response.body().string();
-            }
         }
 
     public String serverPost() {
@@ -43,7 +41,7 @@ public class JsonPost {
         public static void main(String[] args) throws IOException {
             JsonPost example = new JsonPost();
             String json = example.serverPost();
-            String response = example.post("localhost:3000", json);
+            String response = example.post("https://pub-quiz-server.herokuapp.com/register_team", json);
             System.out.println(response);
         }
 }

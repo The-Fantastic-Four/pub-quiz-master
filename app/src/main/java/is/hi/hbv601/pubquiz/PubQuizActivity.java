@@ -1,4 +1,4 @@
-package hbv2.hi.is.pubquiz;
+package is.hi.hbv601.pubquiz;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

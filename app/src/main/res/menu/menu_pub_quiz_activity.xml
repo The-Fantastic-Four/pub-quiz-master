@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="hbv2.hi.is.pubquiz.PubQuiz_activity">
+    tools:context="is.hi.hbv601.pubquiz.hbv2.hi.hbv601.pubquiz.PubQuiz_activity">
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

@@ -1,4 +1,4 @@
-package hbv2.hi.is.pubquiz;
+package is.hi.hbv601.pubquiz;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

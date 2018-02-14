@@ -2,4 +2,6 @@
     <string name="app_name">pubQuiz</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_answer_question">AnswerQuestionActivity</string>
+    <string name="question_number">Spurning %1$d</string>
+    <string name="answer_button">Svara</string>
 </resources>

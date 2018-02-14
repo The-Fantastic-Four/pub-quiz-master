@@ -1,6 +1,7 @@
 package is.hi.hbv601.pubquiz;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -29,10 +30,15 @@ import okhttp3.Response;
  */
 public class AnswerQuestionActivity extends AppCompatActivity {
 
+    // Instance variables
     TextView questionNumber;
     EditText questionAnswer;
     long questionId;
 
+    /**
+     * Runs when the activity is created
+     * @param savedInstanceState state of the saved instance
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -42,22 +48,13 @@ public class AnswerQuestionActivity extends AppCompatActivity {
         questionNumber = findViewById(R.id.questionNumber);
         questionAnswer = findViewById(R.id.questionAnswer);
 
+        // Fetch question from server
         GetQuestionHandler getQuestionHandler = new GetQuestionHandler();
         getQuestionHandler.execute();
 
         final AnswerQuestionHandler answerQuestionHandler = new AnswerQuestionHandler();
 
-        /*client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-            }
-        });*/
-
+        // Sends the answer to server on button click
         Button questionAnswerButton = findViewById(R.id.questionAnswerButton);
         questionAnswerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,16 +64,20 @@ public class AnswerQuestionActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Handles the task of fetching info on the question to the server, asynchronously.
+     */
     public class GetQuestionHandler extends AsyncTask {
 
         OkHttpClient client = new OkHttpClient();
 
+        // Requests info from server
         @Override
         protected Object doInBackground(Object[] objects) {
             MediaType json = MediaType.parse("application/json; charset=utf-8");
             Request request = new Request.Builder()
                     .url("https://pub-quiz-server.herokuapp.com/question")
-                    .post(RequestBody.create(json, "{\"public\": 0}"))
+                    .post(RequestBody.create(json, "{}"))
                     .build();
 
             try {
@@ -89,6 +90,7 @@ public class AnswerQuestionActivity extends AppCompatActivity {
             return null;
         }
 
+        // Handles the response from server
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
@@ -96,7 +98,8 @@ public class AnswerQuestionActivity extends AppCompatActivity {
             try
             {
                 JSONObject jsonObject = new JSONObject((String) o);
-                questionNumber.setText("" + jsonObject.getInt("question_number"));
+                Resources res = getResources();
+                questionNumber.setText(String.format(res.getString(R.string.question_number), jsonObject.getInt("question_number")));
                 questionId = jsonObject.getLong("id");
             } catch (JSONException exc) {
                 exc.printStackTrace();
@@ -104,6 +107,9 @@ public class AnswerQuestionActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Handles the task of sending the answers to the server, asynchronously.
+     */
     public class AnswerQuestionHandler extends AsyncTask {
 
         OkHttpClient client = new OkHttpClient();
@@ -120,6 +126,7 @@ public class AnswerQuestionActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
+            // Sends info to server
             MediaType json = MediaType.parse("application/json; charset=utf-8");
             Request request = new Request.Builder()
                     .url("https://pub-quiz-server.herokuapp.com/answer")
@@ -136,6 +143,7 @@ public class AnswerQuestionActivity extends AppCompatActivity {
             return null;
         }
 
+        // Handles response from server
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);

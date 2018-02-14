@@ -1,5 +1,6 @@
 package is.hi.hbv601.pubquiz;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +30,8 @@ import okhttp3.Response;
 public class AnswerQuestionActivity extends AppCompatActivity {
 
     TextView questionNumber;
+    EditText questionAnswer;
+    long questionId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -37,9 +40,12 @@ public class AnswerQuestionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_answer_question);
 
         questionNumber = findViewById(R.id.questionNumber);
+        questionAnswer = findViewById(R.id.questionAnswer);
 
         GetQuestionHandler getQuestionHandler = new GetQuestionHandler();
         getQuestionHandler.execute();
+
+        final AnswerQuestionHandler answerQuestionHandler = new AnswerQuestionHandler();
 
         /*client.newCall(request).enqueue(new Callback() {
             @Override
@@ -52,13 +58,11 @@ public class AnswerQuestionActivity extends AppCompatActivity {
             }
         });*/
 
-        EditText questionAnswer = findViewById(R.id.questionAnswer);
-
         Button questionAnswerButton = findViewById(R.id.questionAnswerButton);
         questionAnswerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                answerQuestionHandler.execute();
             }
         });
     }
@@ -93,9 +97,53 @@ public class AnswerQuestionActivity extends AppCompatActivity {
             {
                 JSONObject jsonObject = new JSONObject((String) o);
                 questionNumber.setText("" + jsonObject.getInt("question_number"));
+                questionId = jsonObject.getLong("id");
             } catch (JSONException exc) {
                 exc.printStackTrace();
             }
+        }
+    }
+
+    public class AnswerQuestionHandler extends AsyncTask {
+
+        OkHttpClient client = new OkHttpClient();
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+
+            JSONObject answer = new JSONObject();
+            try {
+                answer.put("answer", questionAnswer.getText());
+                answer.put("team_id", 99);
+                answer.put("question_id", questionId);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            MediaType json = MediaType.parse("application/json; charset=utf-8");
+            Request request = new Request.Builder()
+                    .url("https://pub-quiz-server.herokuapp.com/answer")
+                    .post(RequestBody.create(json, answer.toString()))
+                    .build();
+
+            try {
+                Response response = client.newCall(request).execute();
+                return response.body().string();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+
+            // TODO Check if successful answer
+
+            Intent answerQuestionIntent = new Intent(AnswerQuestionActivity.this, AnswerQuestionActivity.class);
+            startActivity(answerQuestionIntent);
         }
     }
 

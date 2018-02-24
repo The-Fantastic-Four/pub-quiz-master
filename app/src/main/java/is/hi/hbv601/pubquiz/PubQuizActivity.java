@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
 // activity class to link with fragment container
-public class PubQuizActivity extends SingleFragmentActivity {
+public class PubQuizActivity extends RegisterTeamActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,7 +16,7 @@ public class PubQuizActivity extends SingleFragmentActivity {
 
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
         if (fragment == null) {
-            fragment = new PubQuiz_Fragment();
+            fragment = new RegisterTeamFragment();
             fm.beginTransaction()
                     .add(R.id.fragment_container, fragment) // FrameLayout
                     .commit();
@@ -25,7 +25,7 @@ public class PubQuizActivity extends SingleFragmentActivity {
     }
     @Override
     protected Fragment createFragment() {
-        return new PubQuiz_Fragment();
+        return new RegisterTeamFragment();
     }
 
 }

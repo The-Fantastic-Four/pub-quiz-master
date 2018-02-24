@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pub_quiz_server_base_url">https://pub-quiz-server.herokuapp.com/api/</string>
+    <string name="get_question_path">question</string>
+    <string name="register_team_path">register_team</string>
+    <string name="answer_question_path">answer</string>
+</resources>

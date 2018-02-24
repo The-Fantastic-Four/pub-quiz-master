@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import is.hi.hbv601.pubquiz.model.Question;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -33,7 +34,8 @@ public class AnswerQuestionActivity extends AppCompatActivity {
     // Instance variables
     TextView questionNumber;
     EditText questionAnswer;
-    long questionId;
+
+    Question question;
 
     /**
      * Runs when the activity is created
@@ -64,6 +66,14 @@ public class AnswerQuestionActivity extends AppCompatActivity {
         });
     }
 
+    public void update()
+    {
+        questionNumber.setText(
+                String.format(
+                        getResources().getString(R.string.question_number),
+                        this.question.getQuestionNumber()));
+    }
+
     /**
      * Handles the task of fetching info on the question to the server, asynchronously.
      */
@@ -76,7 +86,8 @@ public class AnswerQuestionActivity extends AppCompatActivity {
         protected Object doInBackground(Object[] objects) {
             MediaType json = MediaType.parse("application/json; charset=utf-8");
             Request request = new Request.Builder()
-                    .url("https://pub-quiz-server.herokuapp.com/question")
+                    .url(getResources().getString(R.string.pub_quiz_server_base_url) +
+                         getResources().getString(R.string.get_question_path))
                     .post(RequestBody.create(json, "{}"))
                     .build();
 
@@ -98,9 +109,15 @@ public class AnswerQuestionActivity extends AppCompatActivity {
             try
             {
                 JSONObject jsonObject = new JSONObject((String) o);
-                Resources res = getResources();
-                questionNumber.setText(String.format(res.getString(R.string.question_number), jsonObject.getInt("question_number")));
-                questionId = jsonObject.getLong("id");
+
+                question = new Question();
+                question.setId(jsonObject.getLong("id"));
+                question.setQuestion(jsonObject.getString("question"));
+                question.setQuestionNumber(jsonObject.getInt("question_number"));
+                question.setTotalQuestions(jsonObject.getInt("total_questions"));
+                question.setType(jsonObject.getString("question_type"));
+
+                update();
             } catch (JSONException exc) {
                 exc.printStackTrace();
             }
@@ -121,7 +138,7 @@ public class AnswerQuestionActivity extends AppCompatActivity {
             try {
                 answer.put("answer", questionAnswer.getText());
                 answer.put("team_id", 99);
-                answer.put("question_id", questionId);
+                answer.put("question_id", question.getId());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -129,7 +146,8 @@ public class AnswerQuestionActivity extends AppCompatActivity {
             // Sends info to server
             MediaType json = MediaType.parse("application/json; charset=utf-8");
             Request request = new Request.Builder()
-                    .url("https://pub-quiz-server.herokuapp.com/answer")
+                    .url(getResources().getString(R.string.pub_quiz_server_base_url) +
+                            getResources().getString(R.string.answer_question_path))
                     .post(RequestBody.create(json, answer.toString()))
                     .build();
 

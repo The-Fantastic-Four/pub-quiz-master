@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
  * Created by ${Fannar} on 14.2.2018.
  */
 
-public abstract class SingleFragmentActivity extends AppCompatActivity {
+public abstract class RegisterTeamActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

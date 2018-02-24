@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,19 +27,17 @@ import okhttp3.Response;
 /*
 fragment for team registration
  */
-public class PubQuiz_Fragment extends Fragment{
+public class RegisterTeamFragment extends Fragment{
 
     //instance variables
     private EditText teamName;
     private EditText roomName;
     private Button sendTeam;
-    private Team team;
 
     //runs when the fragment is created
     @Override
     public void onCreate (Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        team = new Team();
 
     }
     //runs when fragments is created and initializes UI objects
@@ -51,44 +47,15 @@ public class PubQuiz_Fragment extends Fragment{
         View v = inflater.inflate( R.layout.register_team, container, false );
 
         //Set textview for team name in UI and setting listeners.
-        teamName = (EditText) v.findViewById( R.id.etTeamName );
-        teamName.addTextChangedListener( new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        teamName = v.findViewById( R.id.etTeamName );
 
-            }
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                team.setTeamName( charSequence.toString() );
-            }
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        } );
         // set textview for room name and setting listener
-        roomName = (EditText) v.findViewById( R.id.etRoomName );
-        roomName.addTextChangedListener( new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                team.setRoomName( charSequence.toString() );
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        } );
+        roomName = v.findViewById( R.id.etRoomName );
 
         //initalize RegisterTeamHandler
         final RegisterTeamHandler registerTeamHandler = new RegisterTeamHandler();
         //initilize btn and set listener
-        sendTeam = (Button) v.findViewById( R.id.btTeamReg );
+        sendTeam = v.findViewById( R.id.btTeamReg );
         sendTeam.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,7 +86,8 @@ public class PubQuiz_Fragment extends Fragment{
             //creating a post request
             MediaType json = MediaType.parse("application/json; charset=utf-8");
             Request request = new Request.Builder()
-                    .url("https://pub-quiz-server.herokuapp.com/register_team")
+                    .url(getResources().getString(R.string.pub_quiz_server_base_url) +
+                            getResources().getString(R.string.register_team_path))
                     .post(RequestBody.create(json, t.toString()))
                     .build();
             try {
@@ -136,7 +104,7 @@ public class PubQuiz_Fragment extends Fragment{
         protected void onPostExecute(Object o) {
             super.onPostExecute( o );
 
-            Intent answerQuestionIntent = new Intent(PubQuiz_Fragment.this.getActivity(), AnswerQuestionActivity.class);
+            Intent answerQuestionIntent = new Intent(RegisterTeamFragment.this.getActivity(), AnswerQuestionActivity.class);
             answerQuestionIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(answerQuestionIntent);
         }

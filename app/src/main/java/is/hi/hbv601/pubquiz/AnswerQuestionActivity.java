@@ -151,6 +151,7 @@ public class AnswerQuestionActivity extends AppCompatActivity {
             // TODO Check if successful answer
 
             Intent answerQuestionIntent = new Intent(AnswerQuestionActivity.this, AnswerQuestionActivity.class);
+            answerQuestionIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(answerQuestionIntent);
         }
     }

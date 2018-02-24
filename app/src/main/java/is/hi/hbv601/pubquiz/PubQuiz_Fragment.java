@@ -137,6 +137,7 @@ public class PubQuiz_Fragment extends Fragment{
             super.onPostExecute( o );
 
             Intent answerQuestionIntent = new Intent(PubQuiz_Fragment.this.getActivity(), AnswerQuestionActivity.class);
+            answerQuestionIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(answerQuestionIntent);
         }
     }

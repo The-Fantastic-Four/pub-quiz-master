@@ -23,7 +23,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
- * Shows appropriate question and submits answer when user has ðushed the answer button.
+ * Shows appropriate question and submits answer when user has pushed the answer button.
  *
  * @author Ragnheiður Ásta Karlsdóttir rak4@hi.is
  * @author Viktor Alex Brynjarsson vab18@hi.is
@@ -33,6 +33,7 @@ public class AnswerQuestionActivity extends AppCompatActivity {
 
     // Instance variables
     TextView questionNumber;
+    TextView questionText;
     EditText questionAnswer;
 
     Question question;
@@ -49,6 +50,7 @@ public class AnswerQuestionActivity extends AppCompatActivity {
 
         questionNumber = findViewById(R.id.questionNumber);
         questionAnswer = findViewById(R.id.questionAnswer);
+        questionText = findViewById(R.id.questionText);
 
         // Fetch question from server
         GetQuestionHandler getQuestionHandler = new GetQuestionHandler();
@@ -72,6 +74,7 @@ public class AnswerQuestionActivity extends AppCompatActivity {
                 String.format(
                         getResources().getString(R.string.question_number),
                         this.question.getQuestionNumber()));
+        questionText.setText(this.question.getQuestion());
     }
 
     /**

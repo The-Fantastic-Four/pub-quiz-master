@@ -1,5 +1,7 @@
 package is.hi.hbv601.pubquiz;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.AsyncTask;
@@ -66,6 +68,21 @@ public class AnswerQuestionActivity extends AppCompatActivity {
                 answerQuestionHandler.execute();
             }
         });
+    }
+
+    // Stops back function of back button and changes it to exit if pressed twice.
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Hætta leik")
+                .setMessage("Með því að ýta á OK yfirgefur þú núverandi leik.")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        AnswerQuestionActivity.super.onBackPressed();
+                    }
+                }).create().show();
     }
 
     public void update()

@@ -1,5 +1,7 @@
 package is.hi.hbv601.pubquiz;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.AsyncTask;
@@ -23,7 +25,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
- * Shows appropriate question and submits answer when user has ðushed the answer button.
+ * Shows appropriate question and submits answer when user has pushed the answer button.
  *
  * @author Ragnheiður Ásta Karlsdóttir rak4@hi.is
  * @author Viktor Alex Brynjarsson vab18@hi.is
@@ -33,6 +35,7 @@ public class AnswerQuestionActivity extends AppCompatActivity {
 
     // Instance variables
     TextView questionNumber;
+    TextView questionText;
     EditText questionAnswer;
 
     Question question;
@@ -49,6 +52,7 @@ public class AnswerQuestionActivity extends AppCompatActivity {
 
         questionNumber = findViewById(R.id.questionNumber);
         questionAnswer = findViewById(R.id.questionAnswer);
+        questionText = findViewById(R.id.questionText);
 
         // Fetch question from server
         GetQuestionHandler getQuestionHandler = new GetQuestionHandler();
@@ -66,12 +70,28 @@ public class AnswerQuestionActivity extends AppCompatActivity {
         });
     }
 
+    // Stops back function of back button and changes it to exit if pressed twice.
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Hætta leik")
+                .setMessage("Með því að ýta á OK yfirgefur þú núverandi leik.")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        AnswerQuestionActivity.super.onBackPressed();
+                    }
+                }).create().show();
+    }
+
     public void update()
     {
         questionNumber.setText(
                 String.format(
                         getResources().getString(R.string.question_number),
                         this.question.getQuestionNumber()));
+        questionText.setText(this.question.getQuestion());
     }
 
     /**

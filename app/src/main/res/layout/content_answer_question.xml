@@ -19,9 +19,16 @@
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="16dp" />
 
+    <TextView
+        android:id="@+id/questionText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autoSizeMaxTextSize="28dp"
+        android:textSize="18sp" />
+
     <EditText
         android:id="@+id/questionAnswer"
-        android:layout_width="313dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text|textMultiLine"

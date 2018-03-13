@@ -38,14 +38,10 @@ public class QuestionPagerActivity extends AppCompatActivity {
         questions = new ArrayList<>();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        questionViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
+
+        final FragmentStatePagerAdapter fragmentPagerAdapter = new FragmentStatePagerAdapter(fragmentManager) {
             @Override
             public Fragment getItem(int position) {
-                if (questionsChanged) {
-                    notifyDataSetChanged();
-                    questionsChanged = false;
-                }
-
                 Question q = questions.get(position);
                 QuestionFragment cf = new QuestionFragment();
                 cf.setQuestion(q);
@@ -54,14 +50,11 @@ public class QuestionPagerActivity extends AppCompatActivity {
 
             @Override
             public int getCount() {
-                if (questionsChanged) {
-                    notifyDataSetChanged();
-                    questionsChanged = false;
-                }
-
                 return questions.size();
             }
-        });
+        };
+
+        questionViewPager.setAdapter(fragmentPagerAdapter);
 
         QuizHolder quiz = QuizHolder.getInstance();
         Query questionsInQuiz = FirebaseDatabase.getInstance().getReference("quizzes/" + quiz.getQuizId() + "/questions").orderByValue();
@@ -69,19 +62,17 @@ public class QuestionPagerActivity extends AppCompatActivity {
         questionsInQuiz.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Toast.makeText(QuestionPagerActivity.this,
-                        "onChildAdded: " + dataSnapshot.getKey(),
-                        Toast.LENGTH_LONG).show();
+                final long questionNumber = Long.parseLong(dataSnapshot.getValue().toString());
 
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("questions/" + dataSnapshot.getKey());
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Question q = dataSnapshot.getValue(Question.class);
+                        q.setNumber(questionNumber);
 
                         questions.add(q);
-
-                        questionsChanged = true;
+                        fragmentPagerAdapter.notifyDataSetChanged();
                     }
 
                     @Override

@@ -16,6 +16,7 @@ public class Question {
     private String question;
     private boolean isPrivate;
     private String type;
+    private long number;
 
     public Question()
     {
@@ -43,5 +44,13 @@ public class Question {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public long getNumber() {
+        return number;
+    }
+
+    public void setNumber(long number) {
+        this.number = number;
     }
 }

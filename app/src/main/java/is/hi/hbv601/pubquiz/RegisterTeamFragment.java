@@ -10,6 +10,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
@@ -33,6 +39,8 @@ public class RegisterTeamFragment extends Fragment{
     private EditText roomName;
     private Button sendTeam;
 
+    private DatabaseReference mDatabase;
+
     //runs when the fragment is created
     @Override
     public void onCreate (Bundle savedInstanceState){
@@ -51,62 +59,34 @@ public class RegisterTeamFragment extends Fragment{
         // set textview for room name and setting listener
         roomName = v.findViewById( R.id.etRoomName );
 
-        //initalize RegisterTeamHandler
-        final RegisterTeamHandler registerTeamHandler = new RegisterTeamHandler();
         //initilize btn and set listener
         sendTeam = v.findViewById( R.id.btTeamReg );
         sendTeam.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                registerTeamHandler.execute();
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("quizzes");
+
+                mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        DataSnapshot quiz = dataSnapshot.child(roomName.getText().toString());
+                        if (quiz.exists()) {
+                            DatabaseReference newTeamRef = quiz.child("teams").child(teamName.getText().toString()).getRef();
+                            newTeamRef.setValue(true);
+                            System.out.println("Found!");
+                        } else {
+                            System.out.println("Not Found!");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
             }
         } );
         return v;
-    }
-
-    //Class for sending json object to server
-    public class RegisterTeamHandler extends AsyncTask {
-
-        OkHttpClient client = new OkHttpClient();
-
-        @Override
-        protected Object doInBackground(Object[] objects) {
-
-            //making a jsonObject with room name and team name
-            JSONObject t = new JSONObject();
-            try {
-                t.accumulate( "id", "4" );
-                t.accumulate( "room_name", roomName.getText() );
-                t.accumulate( "team_name", teamName.getText() );
-                t.accumulate( "phone_id", "2" );
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            //creating a post request
-            MediaType json = MediaType.parse("application/json; charset=utf-8");
-            Request request = new Request.Builder()
-                    .url(getResources().getString(R.string.pub_quiz_server_base_url) +
-                            getResources().getString(R.string.register_team_path))
-                    .post(RequestBody.create(json, t.toString()))
-                    .build();
-            try {
-                Response response = client.newCall(request).execute();
-                return response.body().string();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-        //Handles sending team creation to server
-        @Override
-        protected void onPostExecute(Object o) {
-            super.onPostExecute( o );
-
-            Intent answerQuestionIntent = new Intent(RegisterTeamFragment.this.getActivity(), AnswerQuestionActivity.class);
-            answerQuestionIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-            startActivity(answerQuestionIntent);
-        }
     }
 }
 

@@ -5,11 +5,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 /**
  * Created by ${Fannar} on 14.2.2018.
  */
 
-public abstract class RegisterTeamActivity extends AppCompatActivity {
+public class RegisterTeamActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,12 +23,12 @@ public abstract class RegisterTeamActivity extends AppCompatActivity {
 
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
         if (fragment == null) {
-            fragment = createFragment();
+            fragment = new RegisterTeamFragment();
             fm.beginTransaction()
                     .add(R.id.fragment_container, fragment) // FrameLayout
                     .commit();
         }
+
     }
-    protected abstract Fragment createFragment();
 
 }

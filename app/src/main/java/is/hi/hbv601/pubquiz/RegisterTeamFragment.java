@@ -3,12 +3,14 @@ package is.hi.hbv601.pubquiz;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -69,13 +71,34 @@ public class RegisterTeamFragment extends Fragment{
                 mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        DataSnapshot quiz = dataSnapshot.child(roomName.getText().toString());
+                        //
+                        DataSnapshot quiz = dataSnapshot.child(getRoomName());
                         if (quiz.exists()) {
-                            DatabaseReference newTeamRef = quiz.child("teams").child(teamName.getText().toString()).getRef();
-                            newTeamRef.setValue(true);
-                            System.out.println("Found!");
+                            DataSnapshot team = quiz.child("teams").child(getTeamName());
+                            if (team.exists()) {
+                                if (team.getValue().toString().equals(getPhoneId())) {
+                                    // Is okay team is re-connecting
+                                    Toast.makeText(RegisterTeamFragment.this.getContext(),
+                                            "Is ok, reconnect.",
+                                            Toast.LENGTH_LONG).show();
+
+                                } else {
+                                    // Oh no, can't have the same name :(
+                                    Toast.makeText(RegisterTeamFragment.this.getContext(),
+                                            "Oh no, cannot use team name :( \n'" + team.getValue().toString() + "' != '" + getPhoneId() + "'",
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            } else {
+                                DatabaseReference newTeamRef = quiz.child("teams").child(teamName.getText().toString()).getRef();
+                                newTeamRef.setValue(getPhoneId());
+                                Toast.makeText(RegisterTeamFragment.this.getContext(),
+                                        "Created new team.",
+                                        Toast.LENGTH_LONG).show();
+                            }
                         } else {
-                            System.out.println("Not Found!");
+                            Toast.makeText(RegisterTeamFragment.this.getContext(),
+                                    "Quiz not found.",
+                                    Toast.LENGTH_LONG).show();
                         }
                     }
 
@@ -87,6 +110,18 @@ public class RegisterTeamFragment extends Fragment{
             }
         } );
         return v;
+    }
+
+    private String getTeamName() {
+        return teamName.getText().toString();
+    }
+
+    private String getRoomName() {
+        return roomName.getText().toString();
+    }
+
+    private String getPhoneId() {
+        return Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 }
 

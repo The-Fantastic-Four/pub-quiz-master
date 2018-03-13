@@ -1,35 +1,24 @@
 package is.hi.hbv601.pubquiz.model;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.IgnoreExtraProperties;
+import com.google.firebase.database.ValueEventListener;
+
 /**
  * Created by viktoralex on 24.2.2018.
  */
 
+@IgnoreExtraProperties
 public class Question {
-    private long id;
     private String question;
-    private int questionNumber;
-    private int totalQuestions;
+    private boolean isPrivate;
     private String type;
 
     public Question()
     {
-    }
-
-    public Question(long id, String question, int questionNumber, int totalQuestions, String type)
-    {
-        this.setId(id);
-        this.setQuestion(question);
-        this.setQuestionNumber(questionNumber);
-        this.setTotalQuestions(totalQuestions);
-        this.setType(type);
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getQuestion() {
@@ -40,20 +29,12 @@ public class Question {
         this.question = question;
     }
 
-    public int getQuestionNumber() {
-        return questionNumber;
+    public boolean isPrivate() {
+        return isPrivate;
     }
 
-    public void setQuestionNumber(int questionNumber) {
-        this.questionNumber = questionNumber;
-    }
-
-    public int getTotalQuestions() {
-        return totalQuestions;
-    }
-
-    public void setTotalQuestions(int totalQuestions) {
-        this.totalQuestions = totalQuestions;
+    public void setPrivate(boolean aPrivate) {
+        isPrivate = aPrivate;
     }
 
     public String getType() {

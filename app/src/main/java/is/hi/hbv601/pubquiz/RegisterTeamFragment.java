@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import is.hi.hbv601.pubquiz.AnswerQuestionActivity;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -94,7 +95,9 @@ public class RegisterTeamFragment extends Fragment{
                                 Toast.makeText(RegisterTeamFragment.this.getContext(),
                                         "Created new team.",
                                         Toast.LENGTH_LONG).show();
+
                             }
+
                         } else {
                             Toast.makeText(RegisterTeamFragment.this.getContext(),
                                     "Quiz not found.",
@@ -107,6 +110,8 @@ public class RegisterTeamFragment extends Fragment{
 
                     }
                 });
+                Intent i = new Intent(v.getContext(), AnswerQuestionActivity.class);
+                startActivity(i);
             }
         } );
         return v;

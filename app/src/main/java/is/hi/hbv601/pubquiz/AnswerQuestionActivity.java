@@ -6,11 +6,19 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,6 +45,7 @@ public class AnswerQuestionActivity extends AppCompatActivity {
     TextView questionNumber;
     TextView questionText;
     EditText questionAnswer;
+
 
     Question question;
 
@@ -68,7 +77,34 @@ public class AnswerQuestionActivity extends AppCompatActivity {
                 answerQuestionHandler.execute();
             }
         });
+
+        Button leaveQuizButton = findViewById(R.id.leaveQuizButton);
+        leaveQuizButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("quizzes");
+
+                mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+                Intent i = new Intent(v.getContext(), RegisterTeamActivity.class);
+                startActivity(i);
+            }
+        } );
+
+
+
     }
+
 
     // Stops back function of back button and changes it to exit if pressed twice.
     @Override
@@ -192,6 +228,10 @@ public class AnswerQuestionActivity extends AppCompatActivity {
             answerQuestionIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(answerQuestionIntent);
         }
+    }
+
+    private String getPhoneId() {
+        return Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
 }

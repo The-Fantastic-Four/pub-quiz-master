@@ -16,14 +16,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.MutableData;
-import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import is.hi.hbv601.pubquiz.R;
 import is.hi.hbv601.pubquiz.model.Question;
 import is.hi.hbv601.pubquiz.model.QuizHolder;
-import is.hi.hbv601.pubquiz.model.Team;
 
 /**
  * Fragment for showing the user to read and answer a question
@@ -38,7 +35,7 @@ public class QuestionFragment extends Fragment {
     private EditText questionAnswer;
     private Button questionAnswerButton;
     private Button leaveQuizButton;
-    private EditText teamNameTextView;
+
     private String firebaseAnswer = "";
 
     @Override
@@ -52,15 +49,13 @@ public class QuestionFragment extends Fragment {
         questionAnswer = v.findViewById(R.id.questionAnswer);
         questionText = v.findViewById(R.id.questionText);
         questionAnswerButton = v.findViewById(R.id.questionAnswerButton);
-        leaveQuizButton = v.findViewById( R.id.leaveQuizButton);
-
+        leaveQuizButton = v.findViewById( R.id.leaveQuizButton );
 
         // Set and event for the answer question button
         questionAnswerButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 QuizHolder quiz = QuizHolder.getInstance();
-                final String teamName = teamNameTextView.getText().toString();
                 DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference(
                         "answers/" + quiz.getQuizId() + "/" + question.getQuestionId() + "/" + quiz.getTeamName() + "/answer");
 
@@ -74,8 +69,26 @@ public class QuestionFragment extends Fragment {
 
         updateView();
 
+        //set event for leaving quiz
+        leaveQuizButton.setOnClickListener( new View.OnClickListener() {
+            @Override
+          public void onClick(View view) {
+                QuizHolder quiz = QuizHolder.getInstance();
+                final String phoneId = getPhoneId();
+                DatabaseReference mDatabaseTeam = FirebaseDatabase.getInstance().getReference(
+                        "quizzes/" + quiz.getQuizId() + "/teams/" + quiz.getTeamName() );
+
+                mDatabaseTeam.removeValue();
+                leaveQuiz();
+
+            }
+        } );
+
+
         return v;
     }
+
+
 
     // Used to set which question this fragment is supposed to show
     public void setQuestion(final String questionId, final long questionNumber)
@@ -101,43 +114,8 @@ public class QuestionFragment extends Fragment {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
-
             }
         });
-
-        /*
-               leaveQuizButton.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                QuizHolder quiz = QuizHolder.getInstance();
-                final String phoneId = getPhoneId();
-                final String teamName = teamNameTextView.getText().toString();
-                DatabaseReference mDatabaseTeam = FirebaseDatabase.getInstance().getReference(
-                    "quizzes/" + quiz.getQuizId());
-
-
-                mDatabaseTeam.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        DataSnapshot teams = dataSnapshot.child( teamName );
-                        if (teams.getValue().toString().equals( phoneId )) {
-                            teams.getRef().removeValue();
-                            leaveQuiz();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Toast.makeText(QuestionFragment.this.getContext(),
-                                "Connection cancelled, please try again.",
-                                Toast.LENGTH_LONG).show();
-                    }
-
-                });
-            }
-        } );
-
-         */
 
         // Listen to answers
         QuizHolder quiz = QuizHolder.getInstance();
@@ -165,26 +143,18 @@ public class QuestionFragment extends Fragment {
         if (question == null)
             return;
 
-        if (questionText == null ||
-                questionNumber == null ||
-                questionAnswer == null ||
-                questionAnswerButton == null)
-            return;
-
-        questionNumber.setText(String.format(
-                getResources().getString(R.string.question_number),
-                question.getNumber()));
-
-        questionAnswer.setText(firebaseAnswer);
-
-        if ("text".equals(question.getType()))
-        {
-            questionText.setVisibility(View.VISIBLE);
+        if (questionText != null) {
             questionText.setText(question.getQuestion());
         }
-        else // question is blank
-        {
-            questionText.setVisibility(View.GONE);
+
+        if (questionNumber != null) {
+            questionNumber.setText(String.format(
+                    getResources().getString(R.string.question_number),
+                    question.getNumber()));
+        }
+
+        if (questionAnswer != null) {
+            questionAnswer.setText(firebaseAnswer);
         }
     }
 
@@ -197,6 +167,5 @@ public class QuestionFragment extends Fragment {
     private String getPhoneId() {
         return Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
     }
-
 
 }

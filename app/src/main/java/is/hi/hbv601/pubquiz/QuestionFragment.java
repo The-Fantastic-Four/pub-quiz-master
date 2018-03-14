@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,7 +18,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import is.hi.hbv601.pubquiz.R;
 import is.hi.hbv601.pubquiz.model.Question;
 import is.hi.hbv601.pubquiz.model.QuizHolder;
 
@@ -74,16 +73,12 @@ public class QuestionFragment extends Fragment {
             @Override
           public void onClick(View view) {
                 QuizHolder quiz = QuizHolder.getInstance();
-                final String phoneId = getPhoneId();
                 DatabaseReference mDatabaseTeam = FirebaseDatabase.getInstance().getReference(
                         "quizzes/" + quiz.getQuizId() + "/teams/" + quiz.getTeamName() );
-
                 mDatabaseTeam.removeValue();
                 leaveQuiz();
-
             }
         } );
-
 
         return v;
     }
@@ -158,12 +153,14 @@ public class QuestionFragment extends Fragment {
         }
     }
 
+    //leave quiz and redirect to registerActivity
     private void leaveQuiz() {
         Intent leaveQuizIntent = new Intent(QuestionFragment.this.getActivity(), RegisterTeamActivity.class);
         leaveQuizIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(leaveQuizIntent);
     }
 
+    // get android id
     private String getPhoneId() {
         return Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
     }

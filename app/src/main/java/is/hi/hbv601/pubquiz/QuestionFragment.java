@@ -120,18 +120,26 @@ public class QuestionFragment extends Fragment {
         if (question == null)
             return;
 
-        if (questionText != null) {
+        if (questionText == null ||
+                questionNumber == null ||
+                questionAnswer == null ||
+                questionAnswerButton == null)
+            return;
+
+        questionNumber.setText(String.format(
+                getResources().getString(R.string.question_number),
+                question.getNumber()));
+
+        questionAnswer.setText(firebaseAnswer);
+
+        if ("text".equals(question.getType()))
+        {
+            questionText.setVisibility(View.VISIBLE);
             questionText.setText(question.getQuestion());
         }
-
-        if (questionNumber != null) {
-            questionNumber.setText(String.format(
-                    getResources().getString(R.string.question_number),
-                    question.getNumber()));
-        }
-
-        if (questionAnswer != null) {
-            questionAnswer.setText(firebaseAnswer);
+        else // question is blank
+        {
+            questionText.setVisibility(View.GONE);
         }
     }
 

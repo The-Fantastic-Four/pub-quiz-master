@@ -9,6 +9,12 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import is.hi.hbv601.pubquiz.R;
 import is.hi.hbv601.pubquiz.model.Question;
 
@@ -44,12 +50,25 @@ public class QuestionFragment extends Fragment {
         return v;
     }
 
-    public void setQuestion(Question q)
+    public void setQuestion(String questionId, final long questionNumber)
     {
-        question = q;
-        System.out.println("Got question " + question);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("questions/" + questionId);
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Question q = dataSnapshot.getValue(Question.class);
+                q.setNumber(questionNumber);
 
-        updateView();
+                question = q;
+
+                updateView();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void updateView()
@@ -59,12 +78,12 @@ public class QuestionFragment extends Fragment {
 
         if (questionText != null) {
             questionText.setText(question.getQuestion());
+        }
 
         if (questionNumber != null) {
             questionNumber.setText(String.format(
                     getResources().getString(R.string.question_number),
                     question.getNumber()));
-        }
         }
     }
 

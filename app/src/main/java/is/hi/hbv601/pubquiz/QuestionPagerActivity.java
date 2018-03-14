@@ -20,14 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import is.hi.hbv601.pubquiz.model.Question;
+import is.hi.hbv601.pubquiz.model.QuestionReference;
 import is.hi.hbv601.pubquiz.model.QuizHolder;
 
 public class QuestionPagerActivity extends AppCompatActivity {
 
     private ViewPager questionViewPager;
-    private List<Question> questions;
-
-    private boolean questionsChanged = false;
+    private List<QuestionReference> questions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +41,9 @@ public class QuestionPagerActivity extends AppCompatActivity {
         final FragmentStatePagerAdapter fragmentPagerAdapter = new FragmentStatePagerAdapter(fragmentManager) {
             @Override
             public Fragment getItem(int position) {
-                Question q = questions.get(position);
+                QuestionReference question = questions.get(position);
                 QuestionFragment cf = new QuestionFragment();
-                cf.setQuestion(q);
+                cf.setQuestion(question.getQuestionId(), question.getQuestionNumber());
                 return cf;
             }
 
@@ -62,44 +61,30 @@ public class QuestionPagerActivity extends AppCompatActivity {
         questionsInQuiz.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                final long questionNumber = Long.parseLong(dataSnapshot.getValue().toString());
+                long questionNumber = Long.parseLong(dataSnapshot.getValue().toString());
+                questions.add(new QuestionReference(dataSnapshot.getKey(), questionNumber));
 
-                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("questions/" + dataSnapshot.getKey());
-                ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        Question q = dataSnapshot.getValue(Question.class);
-                        q.setNumber(questionNumber);
-
-                        questions.add(q);
-                        fragmentPagerAdapter.notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
+                fragmentPagerAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 Toast.makeText(QuestionPagerActivity.this,
-                        "onChildChanged",
+                        "onChildChanged: " + dataSnapshot.getKey(),
                         Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 Toast.makeText(QuestionPagerActivity.this,
-                        "onChildRemoved",
+                        "onChildRemoved: " + dataSnapshot.getKey(),
                         Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
                 Toast.makeText(QuestionPagerActivity.this,
-                        "onChildMoved",
+                        "onChildMoved: " + dataSnapshot.getKey(),
                         Toast.LENGTH_LONG).show();
             }
 

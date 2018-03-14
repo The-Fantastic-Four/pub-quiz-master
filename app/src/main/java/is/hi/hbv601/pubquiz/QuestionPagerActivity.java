@@ -1,9 +1,12 @@
 package is.hi.hbv601.pubquiz;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -11,6 +14,7 @@ import android.widget.Toast;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
@@ -136,6 +140,32 @@ public class QuestionPagerActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    // Stops back function of back button and changes it to exit if pressed twice.
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle(getResources().getString(R.string.quit_quiz_dialog_title))
+                .setMessage(getResources().getString(R.string.quit_quiz_dialog_text))
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        QuestionPagerActivity.super.onBackPressed();
+
+                        QuizHolder quiz = QuizHolder.getInstance();
+                        DatabaseReference mDatabaseTeam = FirebaseDatabase.getInstance().getReference(
+                                "quizzes/" + quiz.getQuizId() + "/teams/" + quiz.getTeamName() );
+                        mDatabaseTeam.removeValue();
+
+                        Intent leaveQuizIntent = new Intent(
+                                QuestionPagerActivity.this,
+                                RegisterTeamActivity.class);
+                        leaveQuizIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        startActivity(leaveQuizIntent);
+                    }
+                }).create().show();
     }
 
     // Move the user onto the next question

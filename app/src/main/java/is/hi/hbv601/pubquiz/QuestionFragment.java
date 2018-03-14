@@ -33,7 +33,6 @@ public class QuestionFragment extends Fragment {
     private TextView questionText;
     private EditText questionAnswer;
     private Button questionAnswerButton;
-    private Button leaveQuizButton;
 
     private String firebaseAnswer = "";
 
@@ -48,7 +47,6 @@ public class QuestionFragment extends Fragment {
         questionAnswer = v.findViewById(R.id.questionAnswer);
         questionText = v.findViewById(R.id.questionText);
         questionAnswerButton = v.findViewById(R.id.questionAnswerButton);
-        leaveQuizButton = v.findViewById( R.id.leaveQuizButton );
 
         // Set and event for the answer question button
         questionAnswerButton.setOnClickListener( new View.OnClickListener() {
@@ -67,18 +65,6 @@ public class QuestionFragment extends Fragment {
         });
 
         updateView();
-
-        //set event for leaving quiz
-        leaveQuizButton.setOnClickListener( new View.OnClickListener() {
-            @Override
-          public void onClick(View view) {
-                QuizHolder quiz = QuizHolder.getInstance();
-                DatabaseReference mDatabaseTeam = FirebaseDatabase.getInstance().getReference(
-                        "quizzes/" + quiz.getQuizId() + "/teams/" + quiz.getTeamName() );
-                mDatabaseTeam.removeValue();
-                leaveQuiz();
-            }
-        } );
 
         return v;
     }
@@ -151,13 +137,6 @@ public class QuestionFragment extends Fragment {
         if (questionAnswer != null) {
             questionAnswer.setText(firebaseAnswer);
         }
-    }
-
-    //leave quiz and redirect to registerActivity
-    private void leaveQuiz() {
-        Intent leaveQuizIntent = new Intent(QuestionFragment.this.getActivity(), RegisterTeamActivity.class);
-        leaveQuizIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        startActivity(leaveQuizIntent);
     }
 
     // get android id

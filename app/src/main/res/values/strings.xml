@@ -11,13 +11,15 @@
     <string name="text_teamnr">liðbreyta</string>
     <string name="text_quiz">í quiz </string>
     <string name="text_quiz_name">wonderquiz</string>
-    <string name="text_team_Reg">Skráning í lið</string>
+    <string name="text_team_Reg">Innskráning í pub quiz</string>
     <string name="app_name">pubQuiz</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_answer_question">AnswerQuestionActivity</string>
     <string name="question_number">Spurning %1$d</string>
     <string name="answer_button">Svara</string>
-    <string name="leaveQuizButton">stoppa</string>
+    <string name="leaveQuizButton">Hætta keppni</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="room_name_hint">Herbergi</string>
+    <string name="team_name_hint">Lið</string>
 </resources>

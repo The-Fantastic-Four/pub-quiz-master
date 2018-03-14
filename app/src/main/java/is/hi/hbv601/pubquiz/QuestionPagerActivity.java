@@ -11,23 +11,23 @@ import android.widget.Toast;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import is.hi.hbv601.pubquiz.model.Question;
+import is.hi.hbv601.pubquiz.model.QuestionReference;
 import is.hi.hbv601.pubquiz.model.QuizHolder;
 
+/**
+ * Activity for the user to scroll through the questions in the quiz
+ * Created by viktoralex on 14.3.2018.
+ */
 public class QuestionPagerActivity extends AppCompatActivity {
 
     private ViewPager questionViewPager;
-    private List<Question> questions;
-
-    private boolean questionsChanged = false;
+    private List<QuestionReference> questions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,61 +38,39 @@ public class QuestionPagerActivity extends AppCompatActivity {
         questions = new ArrayList<>();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        questionViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
+
+        // Needs to be stored so that the child event listener can reference and notify when data changes
+        // References the questions list of question references
+        final FragmentStatePagerAdapter fragmentPagerAdapter = new FragmentStatePagerAdapter(fragmentManager) {
             @Override
             public Fragment getItem(int position) {
-                if (questionsChanged) {
-                    notifyDataSetChanged();
-                    questionsChanged = false;
-                }
-
-                Question q = questions.get(position);
+                QuestionReference question = questions.get(position);
                 QuestionFragment cf = new QuestionFragment();
-                cf.setQuestion(q);
+                cf.setQuestion(question.getQuestionId(), question.getQuestionNumber());
                 return cf;
             }
 
             @Override
             public int getCount() {
-                if (questionsChanged) {
-                    notifyDataSetChanged();
-                    questionsChanged = false;
-                }
-
                 return questions.size();
             }
-        });
+        };
 
+        questionViewPager.setAdapter(fragmentPagerAdapter);
 
-
-
-
+        // Fetch the questions in this quiz
         QuizHolder quiz = QuizHolder.getInstance();
         Query questionsInQuiz = FirebaseDatabase.getInstance().getReference("quizzes/" + quiz.getQuizId() + "/questions").orderByValue();
 
+        // When the questions change add to the list and let the fragment pager adapter know the
+        // data has changed
         questionsInQuiz.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Toast.makeText(QuestionPagerActivity.this,
-                        "onChildAdded: " + dataSnapshot.getKey(),
-                        Toast.LENGTH_LONG).show();
+                long questionNumber = Long.parseLong(dataSnapshot.getValue().toString());
+                questions.add(new QuestionReference(dataSnapshot.getKey(), questionNumber));
 
-                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("questions/" + dataSnapshot.getKey());
-                ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        Question q = dataSnapshot.getValue(Question.class);
-
-                        questions.add(q);
-
-                        questionsChanged = true;
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
+                fragmentPagerAdapter.notifyDataSetChanged();
             }
 
 
@@ -102,31 +80,42 @@ public class QuestionPagerActivity extends AppCompatActivity {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                // Not implemented yet
+                // Probably not needed because the fragment is listening to changes itself
                 Toast.makeText(QuestionPagerActivity.this,
-                        "onChildChanged",
+                        "onChildChanged: " + dataSnapshot.getKey(),
                         Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
+                // Not implemented yet
                 Toast.makeText(QuestionPagerActivity.this,
-                        "onChildRemoved",
+                        "onChildRemoved: " + dataSnapshot.getKey(),
                         Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                // Not implemented yet
                 Toast.makeText(QuestionPagerActivity.this,
-                        "onChildMoved",
+                        "onChildMoved: " + dataSnapshot.getKey(),
                         Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                // Not implemented yet
                 Toast.makeText(QuestionPagerActivity.this,
                         "onCancelled",
                         Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    // Move the user onto the next question
+    public void nextQuestion()
+    {
+        questionViewPager.setCurrentItem(questionViewPager.getCurrentItem() + 1, true);
     }
 }

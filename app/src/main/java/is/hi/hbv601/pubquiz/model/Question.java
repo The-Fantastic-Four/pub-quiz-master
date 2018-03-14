@@ -1,21 +1,18 @@
 package is.hi.hbv601.pubquiz.model;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
-import com.google.firebase.database.ValueEventListener;
 
 /**
- * Created by viktoralex on 24.2.2018.
+ * Model used to store a question
+ * Created by viktoralex on 14.3.2018.
  */
-
 @IgnoreExtraProperties
 public class Question {
+    private String questionId;
     private String question;
     private boolean isPrivate;
     private String type;
+    private long number;
 
     public Question()
     {
@@ -43,5 +40,21 @@ public class Question {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public long getNumber() {
+        return number;
+    }
+
+    public void setNumber(long number) {
+        this.number = number;
+    }
+
+    public String getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(String questionId) {
+        this.questionId = questionId;
     }
 }

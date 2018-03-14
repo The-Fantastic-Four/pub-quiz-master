@@ -1,5 +1,4 @@
-    package is.hi.hbv601.pubquiz;
-
+package is.hi.hbv601.pubquiz;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,24 +19,20 @@ import is.hi.hbv601.pubquiz.R;
 import is.hi.hbv601.pubquiz.model.Question;
 import is.hi.hbv601.pubquiz.model.QuizHolder;
 
-    /**
- * A simple {@link Fragment} subclass.
+/**
+ * Fragment for showing the user to read and answer a question
+ * Created by viktoralex on 14.3.2018.
  */
 public class QuestionFragment extends Fragment {
 
-    Question question;
+    private Question question;
 
-    TextView questionNumber;
-    TextView questionText;
-    EditText questionAnswer;
-    Button questionAnswerButton;
+    private TextView questionNumber;
+    private TextView questionText;
+    private EditText questionAnswer;
+    private Button questionAnswerButton;
 
-    String firebaseAnswer = "";
-
-    public QuestionFragment() {
-        // Required empty public constructor
-    }
-
+    private String firebaseAnswer = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,12 +40,13 @@ public class QuestionFragment extends Fragment {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_question, container, false);
 
-        //Set textview for team name in UI and setting listeners.
+        // Find the view items for referencing later
         questionNumber = v.findViewById(R.id.questionNumber);
         questionAnswer = v.findViewById(R.id.questionAnswer);
         questionText = v.findViewById(R.id.questionText);
         questionAnswerButton = v.findViewById(R.id.questionAnswerButton);
 
+        // Set and event for the answer question button
         questionAnswerButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,8 +54,10 @@ public class QuestionFragment extends Fragment {
                 DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference(
                         "answers/" + quiz.getQuizId() + "/" + question.getQuestionId() + "/" + quiz.getTeamName() + "/answer");
 
+                // Save the answer to the db
                 mDatabase.setValue(questionAnswer.getText().toString());
 
+                // Send the user to the next question (if there is any)
                 ((QuestionPagerActivity)QuestionFragment.this.getActivity()).nextQuestion();
             }
         });
@@ -69,6 +67,7 @@ public class QuestionFragment extends Fragment {
         return v;
     }
 
+    // Used to set which question this fragment is supposed to show
     public void setQuestion(final String questionId, final long questionNumber)
     {
         // Listen to question
@@ -76,12 +75,16 @@ public class QuestionFragment extends Fragment {
         questionRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                // Update the question if it changes
                 Question q = dataSnapshot.getValue(Question.class);
-                q.setQuestionId(questionId);
-                q.setNumber(questionNumber);
+                if (q != null) {
+                    q.setQuestionId(questionId);
+                    q.setNumber(questionNumber);
+                }
 
                 question = q;
 
+                // Update the view if the view items have been set
                 updateView();
             }
 
@@ -97,8 +100,10 @@ public class QuestionFragment extends Fragment {
         answerRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                // Set the answer string
                 firebaseAnswer = dataSnapshot.getValue(String.class);
 
+                // Update the view if the view items have been set
                 updateView();
             }
 
@@ -109,6 +114,7 @@ public class QuestionFragment extends Fragment {
         });
     }
 
+    // Update the view (set the question text etc.) if the question and the view items have been loaded
     private void updateView()
     {
         if (question == null)

@@ -1,9 +1,10 @@
 package is.hi.hbv601.pubquiz.model;
 
 /**
+ * References a question in a quiz
+ * Keeps track of which question it is and where in the order it is in the quiz
  * Created by viktoralex on 14.3.2018.
  */
-
 public class QuestionReference {
     private String questionId;
     private long questionNumber;

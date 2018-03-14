@@ -5,10 +5,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
-/**
- * Created by ${Fannar} on 14.2.2018.
- */
 
+/**
+ * Activity for the user to register a team
+ * Created by viktoralex on 14.3.2018.
+ */
 public class RegisterTeamActivity extends AppCompatActivity {
 
     @Override

@@ -96,4 +96,9 @@ public class QuestionPagerActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void nextQuestion()
+    {
+        questionViewPager.setCurrentItem(questionViewPager.getCurrentItem() + 1, true);
+    }
 }

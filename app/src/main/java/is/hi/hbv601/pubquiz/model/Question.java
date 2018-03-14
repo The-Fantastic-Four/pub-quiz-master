@@ -13,6 +13,7 @@ import com.google.firebase.database.ValueEventListener;
 
 @IgnoreExtraProperties
 public class Question {
+    private String questionId;
     private String question;
     private boolean isPrivate;
     private String type;
@@ -52,5 +53,13 @@ public class Question {
 
     public void setNumber(long number) {
         this.number = number;
+    }
+
+    public String getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(String questionId) {
+        this.questionId = questionId;
     }
 }

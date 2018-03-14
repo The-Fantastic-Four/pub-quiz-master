@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/register_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+
+    <TextView
+        android:id="@+id/tvTeamReg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="@string/text_team_Reg"
+        android:textAlignment="center"
+        android:textSize="28sp"
+        android:focusedByDefault="true" />
+
+    <EditText
+        android:id="@+id/etRoomName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTeamReg"
+        android:layout_marginEnd="15dp"
+        android:layout_marginStart="15dp"
+        android:drawableStart="@drawable/ic_weekend_black_24dp"
+        android:drawablePadding="6dp"
+        android:hint="@string/room_name_hint"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/etTeamName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etRoomName"
+        android:layout_marginEnd="15dp"
+        android:layout_marginStart="15dp"
+        android:drawableStart="@drawable/ic_people_black_24dp"
+        android:drawablePadding="6dp"
+        android:hint="@string/team_name_hint"
+        android:inputType="text" />
+
+    <Button
+        android:id="@+id/btTeamReg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etTeamName"
+        android:layout_marginEnd="15dp"
+        android:layout_marginStart="15dp"
+        android:hint="@string/registerButton"/>
+
+</RelativeLayout>

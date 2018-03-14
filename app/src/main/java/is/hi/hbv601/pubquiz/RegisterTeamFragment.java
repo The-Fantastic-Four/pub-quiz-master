@@ -1,112 +1,122 @@
 package is.hi.hbv601.pubquiz;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import java.io.IOException;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import is.hi.hbv601.pubquiz.model.QuizHolder;
 
 /**
+ * Fragment for the teams to register into a quiz
  * Created by ${Fannar} on 13.2.2018.
  */
+public class RegisterTeamFragment extends Fragment {
 
-/*
-fragment for team registration
- */
-public class RegisterTeamFragment extends Fragment{
+    // View items
+    private EditText teamNameTextView;
+    private EditText roomNameTextView;
 
-    //instance variables
-    private EditText teamName;
-    private EditText roomName;
-    private Button sendTeam;
-
-    //runs when the fragment is created
-    @Override
-    public void onCreate (Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
-
-    }
-    //runs when fragments is created and initializes UI objects
+    // Find view items and set event listeners
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View v = inflater.inflate( R.layout.register_team, container, false );
+        View v = inflater.inflate( R.layout.fragment_register_team, container, false );
 
-        //Set textview for team name in UI and setting listeners.
-        teamName = v.findViewById( R.id.etTeamName );
+        // Find the team name input
+        teamNameTextView = v.findViewById( R.id.etTeamName );
 
-        // set textview for room name and setting listener
-        roomName = v.findViewById( R.id.etRoomName );
+        // Find the room name input
+        roomNameTextView = v.findViewById( R.id.etRoomName );
 
-        //initalize RegisterTeamHandler
-        final RegisterTeamHandler registerTeamHandler = new RegisterTeamHandler();
-        //initilize btn and set listener
-        sendTeam = v.findViewById( R.id.btTeamReg );
-        sendTeam.setOnClickListener( new View.OnClickListener() {
+        // Find register button and hook and event listener on it
+        Button sendTeam = v.findViewById(R.id.btTeamReg);
+        sendTeam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                registerTeamHandler.execute();
+                // Get the team and room names that the user wrote
+                final String teamName = teamNameTextView.getText().toString();
+                final String quizId = roomNameTextView.getText().toString();
+
+                // Find all quizzes
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("quizzes/" + quizId);
+                mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // Check if the quiz exists
+                        if (!dataSnapshot.exists()) {
+                            Toast.makeText(RegisterTeamFragment.this.getContext(),
+                                    "Quiz not found.",
+                                    Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
+                        // Check if team can be created
+                        DataSnapshot team = dataSnapshot.child("teams").child(teamName);
+                        if (team.exists()) {
+                            // Compare registered phone id to current phone id
+                            if (team.getValue().toString().equals(getPhoneId())) {
+                                // Is okay team is re-connecting
+                                setQuiz(quizId, teamName);
+                                openQuiz();
+
+                            } else {
+                                // Oh no, can't have the same name :(
+                                Toast.makeText(RegisterTeamFragment.this.getContext(),
+                                        "Team name already registered, sorry.",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        } else {
+                            // Create the team and set the phone id
+                            DatabaseReference newTeamRef = dataSnapshot.child("teams").child(teamName).getRef();
+                            newTeamRef.setValue(getPhoneId());
+
+                            setQuiz(quizId, teamName);
+                            openQuiz();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Toast.makeText(RegisterTeamFragment.this.getContext(),
+                                "Connection cancelled, please try again.",
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         } );
         return v;
     }
 
-    //Class for sending json object to server
-    public class RegisterTeamHandler extends AsyncTask {
+    // Get the phone id, used to authenticate teams for reconnection
+    private String getPhoneId() {
+        return Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+    }
 
-        OkHttpClient client = new OkHttpClient();
+    // Set the current quiz saved in memory as a singleton
+    private void setQuiz(String quizId, String teamName) {
+        QuizHolder quiz = QuizHolder.getInstance();
+        quiz.setQuizId(quizId);
+        quiz.setTeamName(teamName);
+    }
 
-        @Override
-        protected Object doInBackground(Object[] objects) {
-
-            //making a jsonObject with room name and team name
-            JSONObject t = new JSONObject();
-            try {
-                t.accumulate( "id", "4" );
-                t.accumulate( "room_name", roomName.getText() );
-                t.accumulate( "team_name", teamName.getText() );
-                t.accumulate( "phone_id", "2" );
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            //creating a post request
-            MediaType json = MediaType.parse("application/json; charset=utf-8");
-            Request request = new Request.Builder()
-                    .url(getResources().getString(R.string.pub_quiz_server_base_url) +
-                            getResources().getString(R.string.register_team_path))
-                    .post(RequestBody.create(json, t.toString()))
-                    .build();
-            try {
-                Response response = client.newCall(request).execute();
-                return response.body().string();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-        //Handles sending team creation to server
-        @Override
-        protected void onPostExecute(Object o) {
-            super.onPostExecute( o );
-
-            Intent answerQuestionIntent = new Intent(RegisterTeamFragment.this.getActivity(), AnswerQuestionActivity.class);
-            answerQuestionIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-            startActivity(answerQuestionIntent);
-        }
+    // Move over to the question activity
+    private void openQuiz() {
+        Intent answerQuestionIntent = new Intent(RegisterTeamFragment.this.getActivity(), QuestionPagerActivity.class);
+        answerQuestionIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(answerQuestionIntent);
     }
 }
 

@@ -1,35 +1,21 @@
 package is.hi.hbv601.pubquiz.model;
 
-/**
- * Created by viktoralex on 24.2.2018.
- */
+import com.google.firebase.database.IgnoreExtraProperties;
 
+/**
+ * Model used to store a question
+ * Created by viktoralex on 14.3.2018.
+ */
+@IgnoreExtraProperties
 public class Question {
-    private long id;
+    private String questionId;
     private String question;
-    private int questionNumber;
-    private int totalQuestions;
+    private boolean isPrivate;
     private String type;
+    private long number;
 
     public Question()
     {
-    }
-
-    public Question(long id, String question, int questionNumber, int totalQuestions, String type)
-    {
-        this.setId(id);
-        this.setQuestion(question);
-        this.setQuestionNumber(questionNumber);
-        this.setTotalQuestions(totalQuestions);
-        this.setType(type);
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getQuestion() {
@@ -40,20 +26,12 @@ public class Question {
         this.question = question;
     }
 
-    public int getQuestionNumber() {
-        return questionNumber;
+    public boolean isPrivate() {
+        return isPrivate;
     }
 
-    public void setQuestionNumber(int questionNumber) {
-        this.questionNumber = questionNumber;
-    }
-
-    public int getTotalQuestions() {
-        return totalQuestions;
-    }
-
-    public void setTotalQuestions(int totalQuestions) {
-        this.totalQuestions = totalQuestions;
+    public void setPrivate(boolean aPrivate) {
+        isPrivate = aPrivate;
     }
 
     public String getType() {
@@ -62,5 +40,21 @@ public class Question {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public long getNumber() {
+        return number;
+    }
+
+    public void setNumber(long number) {
+        this.number = number;
+    }
+
+    public String getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(String questionId) {
+        this.questionId = questionId;
     }
 }

@@ -43,7 +43,7 @@ public class RegisterTeamFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View v = inflater.inflate( R.layout.register_team, container, false );
+        View v = inflater.inflate( R.layout.fragment_register_team, container, false );
 
         //Set textview for team name in UI and setting listeners.
         teamNameTextView = v.findViewById( R.id.etTeamName );

@@ -5,9 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 /**
  * Created by ${Fannar} on 14.2.2018.
  */
@@ -17,7 +14,7 @@ public class RegisterTeamActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pub_quiz_activity);
+        setContentView(R.layout.activity_register_team);
 
         FragmentManager fm = getSupportFragmentManager();
 

@@ -22,4 +22,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="room_name_hint">Herbergi</string>
     <string name="team_name_hint">Lið</string>
+    <string name="question_switch_toast">Spyrillinn hefur skipt yfir á spurningu nr. %1$d</string>
 </resources>

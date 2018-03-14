@@ -13,6 +13,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,6 +105,30 @@ public class QuestionPagerActivity extends AppCompatActivity {
                 Toast.makeText(QuestionPagerActivity.this,
                         "onCancelled",
                         Toast.LENGTH_LONG).show();
+            }
+        });
+
+        // Switch to the current question if it changes
+        Query currentQuestion = FirebaseDatabase.getInstance().getReference("quizzes/" + quiz.getQuizId() + "/currentQuestion");
+        currentQuestion.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int currentQuestion = dataSnapshot.getValue(Integer.class);
+
+                Toast.makeText(QuestionPagerActivity.this,
+                        String.format(
+                                getResources().getString(R.string.question_switch_toast),
+                                currentQuestion),
+                        Toast.LENGTH_SHORT).show();
+
+                // Decrease by one so that we don't look like such nerds
+                // (currentQuestion is not zero indexed, item number is)
+                questionViewPager.setCurrentItem(currentQuestion - 1, true);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
     }

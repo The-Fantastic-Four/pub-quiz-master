@@ -32,6 +32,8 @@ public class QuestionFragment extends Fragment {
     EditText questionAnswer;
     Button questionAnswerButton;
 
+    String firebaseAnswer = "";
+
     public QuestionFragment() {
         // Required empty public constructor
     }
@@ -69,8 +71,9 @@ public class QuestionFragment extends Fragment {
 
     public void setQuestion(final String questionId, final long questionNumber)
     {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("questions/" + questionId);
-        ref.addValueEventListener(new ValueEventListener() {
+        // Listen to question
+        DatabaseReference questionRef = FirebaseDatabase.getInstance().getReference("questions/" + questionId);
+        questionRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Question q = dataSnapshot.getValue(Question.class);
@@ -78,6 +81,23 @@ public class QuestionFragment extends Fragment {
                 q.setNumber(questionNumber);
 
                 question = q;
+
+                updateView();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        // Listen to answers
+        QuizHolder quiz = QuizHolder.getInstance();
+        DatabaseReference answerRef = FirebaseDatabase.getInstance().getReference("answers/" + quiz.getQuizId() + "/" + questionId + "/" + quiz.getTeamName() + "/answer");
+        answerRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                firebaseAnswer = dataSnapshot.getValue(String.class);
 
                 updateView();
             }
@@ -102,6 +122,10 @@ public class QuestionFragment extends Fragment {
             questionNumber.setText(String.format(
                     getResources().getString(R.string.question_number),
                     question.getNumber()));
+        }
+
+        if (questionAnswer != null) {
+            questionAnswer.setText(firebaseAnswer);
         }
     }
 

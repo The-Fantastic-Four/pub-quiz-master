@@ -1,6 +1,8 @@
 package is.hi.hbv601.pubquiz;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,16 +10,20 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import is.hi.hbv601.pubquiz.R;
 import is.hi.hbv601.pubquiz.model.Question;
 import is.hi.hbv601.pubquiz.model.QuizHolder;
+import is.hi.hbv601.pubquiz.model.Team;
 
 /**
  * Fragment for showing the user to read and answer a question
@@ -31,7 +37,8 @@ public class QuestionFragment extends Fragment {
     private TextView questionText;
     private EditText questionAnswer;
     private Button questionAnswerButton;
-
+    private Button leaveQuizButton;
+    private EditText teamNameTextView;
     private String firebaseAnswer = "";
 
     @Override
@@ -45,12 +52,15 @@ public class QuestionFragment extends Fragment {
         questionAnswer = v.findViewById(R.id.questionAnswer);
         questionText = v.findViewById(R.id.questionText);
         questionAnswerButton = v.findViewById(R.id.questionAnswerButton);
+        leaveQuizButton = v.findViewById( R.id.leaveQuizButton);
+
 
         // Set and event for the answer question button
         questionAnswerButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 QuizHolder quiz = QuizHolder.getInstance();
+                final String teamName = teamNameTextView.getText().toString();
                 DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference(
                         "answers/" + quiz.getQuizId() + "/" + question.getQuestionId() + "/" + quiz.getTeamName() + "/answer");
 
@@ -91,8 +101,43 @@ public class QuestionFragment extends Fragment {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+
             }
         });
+
+        /*
+               leaveQuizButton.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                QuizHolder quiz = QuizHolder.getInstance();
+                final String phoneId = getPhoneId();
+                final String teamName = teamNameTextView.getText().toString();
+                DatabaseReference mDatabaseTeam = FirebaseDatabase.getInstance().getReference(
+                    "quizzes/" + quiz.getQuizId());
+
+
+                mDatabaseTeam.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        DataSnapshot teams = dataSnapshot.child( teamName );
+                        if (teams.getValue().toString().equals( phoneId )) {
+                            teams.getRef().removeValue();
+                            leaveQuiz();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Toast.makeText(QuestionFragment.this.getContext(),
+                                "Connection cancelled, please try again.",
+                                Toast.LENGTH_LONG).show();
+                    }
+
+                });
+            }
+        } );
+
+         */
 
         // Listen to answers
         QuizHolder quiz = QuizHolder.getInstance();
@@ -134,5 +179,16 @@ public class QuestionFragment extends Fragment {
             questionAnswer.setText(firebaseAnswer);
         }
     }
+
+    private void leaveQuiz() {
+        Intent leaveQuizIntent = new Intent(QuestionFragment.this.getActivity(), RegisterTeamActivity.class);
+        leaveQuizIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(leaveQuizIntent);
+    }
+
+    private String getPhoneId() {
+        return Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+    }
+
 
 }

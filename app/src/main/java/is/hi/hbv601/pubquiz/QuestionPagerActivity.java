@@ -162,8 +162,8 @@ public class QuestionPagerActivity extends AppCompatActivity {
                         Intent leaveQuizIntent = new Intent(
                                 QuestionPagerActivity.this,
                                 RegisterTeamActivity.class);
-                        leaveQuizIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                         startActivity(leaveQuizIntent);
+                        QuestionPagerActivity.this.finish();
                     }
                 }).create().show();
     }

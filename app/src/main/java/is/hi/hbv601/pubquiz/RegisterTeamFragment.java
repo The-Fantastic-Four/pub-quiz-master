@@ -114,9 +114,9 @@ public class RegisterTeamFragment extends Fragment {
 
     // Move over to the question activity
     private void openQuiz() {
-        Intent answerQuestionIntent = new Intent(RegisterTeamFragment.this.getActivity(), QuestionPagerActivity.class);
-        answerQuestionIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        Intent answerQuestionIntent = new Intent(this.getActivity(), QuestionPagerActivity.class);
         startActivity(answerQuestionIntent);
+        this.getActivity().finish();
     }
 }
 

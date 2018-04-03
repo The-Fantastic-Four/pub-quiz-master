@@ -124,8 +124,11 @@ public class QuestionFragment extends Fragment {
         if (question == null)
             return;
 
-        if (questionText != null) {
+        if (questionText != null && !question.getType().equals("blank")) {
             questionText.setText(question.getQuestion());
+        } else {
+            // If either the text is null or it is a blank question show an empty string
+            questionText.setText("");
         }
 
         if (questionNumber != null) {

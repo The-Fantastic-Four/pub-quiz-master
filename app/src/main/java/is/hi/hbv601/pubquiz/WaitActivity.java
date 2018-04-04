@@ -13,6 +13,10 @@ import com.google.firebase.database.ValueEventListener;
 import is.hi.hbv601.pubquiz.model.QuizHolder;
 import is.hi.hbv601.pubquiz.view.GifImageView;
 
+/***
+ * Activity shown when the pub quiz has not started yet.
+ * Created by viktoralex 04.04.2018
+ */
 public class WaitActivity extends AppCompatActivity {
 
     @Override

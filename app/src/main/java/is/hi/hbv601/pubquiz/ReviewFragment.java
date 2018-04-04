@@ -77,6 +77,7 @@ public class ReviewFragment extends Fragment {
         return v;
     }
 
+    // Write to database whether the answer is correct or not
     public void setReviewAnswer(Boolean isCorrect) {
         QuizHolder quiz = QuizHolder.getInstance();
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference(
@@ -86,7 +87,7 @@ public class ReviewFragment extends Fragment {
         mDatabase.setValue(isCorrect);
     }
 
-    // Used to set which question this fragment is supposed to show
+    // Used to set which question and answer this fragment is supposed to show
     public void setReviewQuestion(final String teamName, final String questionId, final long questionNumber)
     {
         reviewTeamName = teamName;

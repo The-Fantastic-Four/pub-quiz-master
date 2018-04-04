@@ -25,4 +25,8 @@
     <string name="question_switch_toast">Spyrillinn hefur skipt yfir á spurningu nr. %1$d</string>
     <string name="quit_quiz_dialog_title">Hætta leik</string>
     <string name="quit_quiz_dialog_text">Með því að ýta á OK yfirgefur þú núverandi leik og liði þínu verður eytt.</string>
+    <string name="correctButtonText">Rétt</string>
+    <string name="incorrectButtonText">Rangt</string>
+    <string name="answerLabelText">Svar</string>
+    <string name="appHeader">pubQuiz</string>
 </resources>

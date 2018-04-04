@@ -78,42 +78,24 @@ public class QuestionPagerActivity extends AppCompatActivity {
                 fragmentPagerAdapter.notifyDataSetChanged();
             }
 
-
-            //
-            //   Fannar Muna ad setja fall herna sem notar Quizholder og finna quiz og android til ad eyda ur..
-            //
-
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                // Not implemented yet
-                // Probably not needed because the fragment is listening to changes itself
-                Toast.makeText(QuestionPagerActivity.this,
-                        "onChildChanged: " + dataSnapshot.getKey(),
-                        Toast.LENGTH_LONG).show();
+                // Not implemented
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                // Not implemented yet
-                Toast.makeText(QuestionPagerActivity.this,
-                        "onChildRemoved: " + dataSnapshot.getKey(),
-                        Toast.LENGTH_LONG).show();
+                // Not implemented
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                // Not implemented yet
-                Toast.makeText(QuestionPagerActivity.this,
-                        "onChildMoved: " + dataSnapshot.getKey(),
-                        Toast.LENGTH_LONG).show();
+                // Not implemented
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Not implemented yet
-                Toast.makeText(QuestionPagerActivity.this,
-                        "onCancelled",
-                        Toast.LENGTH_LONG).show();
+                // Not implemented
             }
         });
 
@@ -133,6 +115,29 @@ public class QuestionPagerActivity extends AppCompatActivity {
                 // Decrease by one so that we don't look like such nerds
                 // (currentQuestion is not zero indexed, item number is)
                 questionViewPager.setCurrentItem(currentQuestion - 1, true);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        // Switch to another activity if the quiz status changes
+        Query currentState = FirebaseDatabase.getInstance().getReference("quizzes/" + quiz.getQuizId() + "/status");
+        currentState.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String status = dataSnapshot.getValue(String.class);
+
+                if (status == null)
+                    return;
+
+                if (status.equals("review")) {
+                    Intent nextIntent = new Intent(QuestionPagerActivity.this, ReviewPagerActivity.class);
+                    startActivity(nextIntent);
+                    QuestionPagerActivity.this.finish();
+                }
             }
 
             @Override

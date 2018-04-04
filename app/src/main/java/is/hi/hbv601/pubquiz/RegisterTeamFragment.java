@@ -63,6 +63,8 @@ public class RegisterTeamFragment extends Fragment {
                             return;
                         }
 
+                        String status = dataSnapshot.child("status").getValue(String.class);
+
                         // Check if team can be created
                         DataSnapshot team = dataSnapshot.child("teams").child(teamName);
                         if (team.exists()) {
@@ -70,7 +72,7 @@ public class RegisterTeamFragment extends Fragment {
                             if (team.getValue().toString().equals(getPhoneId())) {
                                 // Is okay team is re-connecting
                                 setQuiz(quizId, teamName);
-                                openQuiz();
+                                openQuiz(status);
 
                             } else {
                                 // Oh no, can't have the same name :(
@@ -84,7 +86,7 @@ public class RegisterTeamFragment extends Fragment {
                             newTeamRef.setValue(getPhoneId());
 
                             setQuiz(quizId, teamName);
-                            openQuiz();
+                            openQuiz(status);
                         }
                     }
 
@@ -113,9 +115,17 @@ public class RegisterTeamFragment extends Fragment {
     }
 
     // Move over to the question activity
-    private void openQuiz() {
-        Intent answerQuestionIntent = new Intent(this.getActivity(), QuestionPagerActivity.class);
-        startActivity(answerQuestionIntent);
+    private void openQuiz(String status) {
+        Intent quizIntent;
+        if (status == null) {
+            quizIntent = new Intent(this.getActivity(), QuestionPagerActivity.class);
+        } else if (status.equals("review")) {
+            quizIntent = new Intent(this.getActivity(), ReviewPagerActivity.class);
+        } else {
+            quizIntent = new Intent(this.getActivity(), QuestionPagerActivity.class);
+        }
+
+        startActivity(quizIntent);
         this.getActivity().finish();
     }
 }

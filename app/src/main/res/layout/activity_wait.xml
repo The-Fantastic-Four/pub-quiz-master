@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:gravity="center"
+        android:text="@string/appHeader"
+        android:textAllCaps="false"
+        android:textSize="40sp"
+        android:textStyle="bold" />
+
+    <is.hi.hbv601.pubquiz.view.GifImageView
+        android:id="@+id/GifImageView"
+        android:layout_height="200dp"
+        android:layout_width="200dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="15dp"
+        android:layout_below="@+id/titleTextView"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/waitTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_below="@+id/GifImageView"
+        android:gravity="center"
+        android:text="Vinsamlegast bíddu, pubQuiz hefst innan skamms"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>

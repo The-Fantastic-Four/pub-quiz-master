@@ -144,10 +144,20 @@ public class ReviewPagerActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String status = dataSnapshot.getValue(String.class);
-                if (status.equals("in progress")) {
+
+                if (status == null)
+                    return;
+
+                if (status.equals("not started")) {
+                    Intent nextIntent = new Intent(ReviewPagerActivity.this, WaitActivity.class);
+                    startActivity(nextIntent);
+                    ReviewPagerActivity.this.finish();
+                } else if (status.equals("in progress")) {
                     Intent nextIntent = new Intent(ReviewPagerActivity.this, QuestionPagerActivity.class);
                     startActivity(nextIntent);
                     ReviewPagerActivity.this.finish();
+                } else if (status.equals("review")) {
+                    // Do nothing, it is this activity
                 }
             }
 

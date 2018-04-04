@@ -133,7 +133,13 @@ public class QuestionPagerActivity extends AppCompatActivity {
                 if (status == null)
                     return;
 
-                if (status.equals("review")) {
+                if (status.equals("not started")) {
+                    Intent nextIntent = new Intent(QuestionPagerActivity.this, WaitActivity.class);
+                    startActivity(nextIntent);
+                    QuestionPagerActivity.this.finish();
+                } else if (status.equals("in progress")) {
+                    // Do nothing, it is this activity
+                } else if (status.equals("review")) {
                     Intent nextIntent = new Intent(QuestionPagerActivity.this, ReviewPagerActivity.class);
                     startActivity(nextIntent);
                     QuestionPagerActivity.this.finish();
@@ -164,10 +170,6 @@ public class QuestionPagerActivity extends AppCompatActivity {
                                 "quizzes/" + quiz.getQuizId() + "/teams/" + quiz.getTeamName() );
                         mDatabaseTeam.removeValue();
 
-                        Intent leaveQuizIntent = new Intent(
-                                QuestionPagerActivity.this,
-                                RegisterTeamActivity.class);
-                        startActivity(leaveQuizIntent);
                         QuestionPagerActivity.this.finish();
                     }
                 }).create().show();

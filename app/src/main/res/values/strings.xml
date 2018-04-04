@@ -19,10 +19,7 @@
     <string name="answer_button">Svara</string>
     <string name="take_barcode_picture">Taka mynd af QR</string>
     <string name="scan_barcode">Skanna QR kóða</string>
-    <string name="qrCodeButton">Qr kóði</string>
     <string name="leaveQuizButton">Hætta keppni</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="room_name_hint">Herbergi</string>
     <string name="team_name_hint">Lið</string>
     <string name="qrCodeText">Skannaðu QR kóða</string>

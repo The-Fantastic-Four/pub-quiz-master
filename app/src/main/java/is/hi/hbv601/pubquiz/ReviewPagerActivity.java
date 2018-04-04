@@ -44,8 +44,8 @@ public class ReviewPagerActivity extends AppCompatActivity {
         // Fetch the questions in this quiz
         final QuizHolder quiz = QuizHolder.getInstance();
 
+        // Find which team's answer this team should review (stored in /reviewers/[quizId]/[teamName])
         DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReference("reviewers/" + quiz.getQuizId() + "/" + quiz.getTeamName());
-
         reviewRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

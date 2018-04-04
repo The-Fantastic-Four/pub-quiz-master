@@ -29,6 +29,7 @@ public class RegisterTeamFragment extends Fragment {
     private EditText teamNameTextView;
     private EditText roomNameTextView;
 
+
     // Find view items and set event listeners
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,12 +38,25 @@ public class RegisterTeamFragment extends Fragment {
 
         // Find the team name input
         teamNameTextView = v.findViewById( R.id.etTeamName );
+        //if team was registered before Qr scanner was opened it is set.
+        String team = getActivity().getIntent().getStringExtra( "teamName" );
+        teamNameTextView.setText( team );
 
         // Find the room name input
         roomNameTextView = v.findViewById( R.id.etRoomName );
+        // if room name has been found with Qr scanners it is set.
+        String qr = getActivity().getIntent().getStringExtra( "roomName" );
+        roomNameTextView.setText( qr );
 
         // Find register button and hook and event listener on it
         Button sendTeam = v.findViewById(R.id.btTeamReg);
+        Button qrCode = v.findViewById( R.id.btQRCode );
+        qrCode.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openQr();
+            }
+        } );
         sendTeam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,6 +131,14 @@ public class RegisterTeamFragment extends Fragment {
         Intent answerQuestionIntent = new Intent(RegisterTeamFragment.this.getActivity(), QuestionPagerActivity.class);
         answerQuestionIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(answerQuestionIntent);
+    }
+
+    //move over to Qr activity and send team name over
+    private void openQr(){
+        Intent QrCodeIntent = new Intent(RegisterTeamFragment.this.getActivity(), QRCodeActivity.class);
+        QrCodeIntent.putExtra( "teamName", teamNameTextView.getText().toString());
+        QrCodeIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(QrCodeIntent);
     }
 }
 

@@ -75,9 +75,6 @@ public class QuestionPagerActivity extends AppCompatActivity {
             }
 
 
-            //
-            //   Fannar Muna ad setja fall herna sem notar Quizholder og finna quiz og android til ad eyda ur..
-            //
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {

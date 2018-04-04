@@ -19,6 +19,8 @@ public class RegisterTeamActivity extends AppCompatActivity {
 
         FragmentManager fm = getSupportFragmentManager();
 
+
+        //String qr = getIntent().getStringExtra( "roomName" );
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
         if (fragment == null) {
             fragment = new RegisterTeamFragment();

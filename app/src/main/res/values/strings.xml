@@ -3,7 +3,6 @@
     <string name="registerButton">Skrá</string>
     <string name="edRoomName">Nafn Herbergis</string>
     <string name="teamName">Nafn liðs</string>
-    <string name="waitText">Bíddu bara!</string>
     <string name="text_question">this is a question</string>
     <string name="text_question_text">Spurning: </string>
     <string name="text_question_nr">X breyta</string>
@@ -30,4 +29,6 @@
     <string name="incorrectButtonText">Rangt</string>
     <string name="answerLabelText">Svar</string>
     <string name="appHeader">pubQuiz</string>
+    <string name="waitText">Vinsamlegast bíddu, pubQuiz hefst innan skamms</string>
+    <string name="aboutText">pubQuiz er búið til af "The Fantastic Four" fyrir Hubúnaðarverkefni 2 HBV601G í Háskóla Íslands.\n\nAnimation icon \'ninja\' is provided by loading.io\nIcons made by Vaadin from www.flaticon.com is licenced by CC 3.0.</string>
 </resources>

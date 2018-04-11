@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerVertical="true">
+
+    <TextView
+        android:id="@+id/teamPlace"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="16dp"
+        android:textSize="36sp"
+        android:text="1." />
+
+    <TextView
+        android:id="@+id/teamName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_toStartOf="@+id/teamScore"
+        android:layout_marginStart="16dp"
+        android:layout_toEndOf="@+id/teamPlace"
+        android:layout_marginEnd="16dp"
+        android:text="Das Team"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/teamScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerInParent="true"
+        android:layout_marginEnd="16dp"
+        android:text="> 9000"
+        android:textSize="30sp" />
+</RelativeLayout>

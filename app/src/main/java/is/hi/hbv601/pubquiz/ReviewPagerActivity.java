@@ -158,6 +158,10 @@ public class ReviewPagerActivity extends AppCompatActivity {
                     ReviewPagerActivity.this.finish();
                 } else if (status.equals("review")) {
                     // Do nothing, it is this activity
+                } else if (status.equals("finished")) {
+                    Intent nextIntent = new Intent(ReviewPagerActivity.this, ScoreboardActivity.class);
+                    startActivity(nextIntent);
+                    ReviewPagerActivity.this.finish();
                 }
             }
 

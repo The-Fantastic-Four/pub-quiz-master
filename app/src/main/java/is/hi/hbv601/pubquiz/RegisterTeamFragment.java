@@ -138,8 +138,12 @@ public class RegisterTeamFragment extends Fragment {
             quizIntent = new Intent(this.getActivity(), WaitActivity.class);
         } else if (status.equals("review")) {
             quizIntent = new Intent(this.getActivity(), ReviewPagerActivity.class);
-        } else {
+        } else if (status.equals("in progress")) {
             quizIntent = new Intent(this.getActivity(), QuestionPagerActivity.class);
+        } else if (status.equals("finished")) {
+            quizIntent = new Intent(this.getActivity(), ScoreboardActivity.class);
+        } else {
+            quizIntent = new Intent(this.getActivity(), WaitActivity.class);
         }
 
         startActivity(quizIntent);

@@ -144,6 +144,10 @@ public class QuestionPagerActivity extends AppCompatActivity {
                     Intent nextIntent = new Intent(QuestionPagerActivity.this, ReviewPagerActivity.class);
                     startActivity(nextIntent);
                     QuestionPagerActivity.this.finish();
+                } else if (status.equals("finished")) {
+                    Intent nextIntent = new Intent(QuestionPagerActivity.this, ScoreboardActivity.class);
+                    startActivity(nextIntent);
+                    QuestionPagerActivity.this.finish();
                 }
             }
 

@@ -12,6 +12,10 @@ import android.view.View;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+/**
+ * View item used to display gif images
+ * Gotten from Mehul Gajjar's answer on stack overflow: https://stackoverflow.com/questions/42898968/adding-gif-in-android-studio
+ */
 public class GifImageView extends View {
 
     private InputStream mInputStream;

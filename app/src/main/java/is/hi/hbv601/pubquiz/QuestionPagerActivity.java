@@ -64,8 +64,9 @@ public class QuestionPagerActivity extends AppCompatActivity {
 
         questionViewPager.setAdapter(fragmentPagerAdapter);
 
-        // Fetch the questions in this quiz
         QuizHolder quiz = QuizHolder.getInstance();
+
+        // Fetch the questions in this quiz
         Query questionsInQuiz = FirebaseDatabase.getInstance().getReference("quizzes/" + quiz.getQuizId() + "/questions").orderByValue();
 
         // When the questions change add to the list and let the fragment pager adapter know the

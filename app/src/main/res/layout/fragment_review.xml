@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    tools:context="is.hi.hbv601.pubquiz.QuestionFragment">
-
+    tools:context="is.hi.hbv601.pubquiz.ReviewFragment">
 
     <TextView
         android:id="@+id/questionNumber"
@@ -19,50 +18,63 @@
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="16dp" />
 
-    <ImageView
-        android:id="@+id/picture_view"
-        android:layout_width="170dp"
-        android:layout_height="150dp"
-        android:layout_below="@+id/questionNumber"
-        android:layout_centerHorizontal="true"
-        android:adjustViewBounds="true"
-        android:maxHeight="200dp"
-        android:maxWidth="270dp"
-        android:scaleType="fitCenter" />
-
-
     <TextView
         android:id="@+id/questionText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="15dp"
         android:layout_marginStart="15dp"
-        android:layout_below="@+id/picture_view"
+        android:layout_marginBottom="15dp"
+        android:layout_below="@+id/questionNumber"
         android:autoSizeMaxTextSize="28dp"
         android:textSize="18sp" />
 
-    <EditText
+    <TextView
+        android:id="@+id/answerLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/questionText"
+        android:layout_marginBottom="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginStart="15dp"
+        android:text="@string/answerLabelText"
+        android:textSize="30sp" />
+
+    <TextView
         android:id="@+id/questionAnswer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text|textMultiLine"
-        android:layout_below="@+id/questionText"
         android:layout_marginEnd="15dp"
         android:layout_marginStart="15dp"
         android:layout_marginBottom="15dp"
-        tools:layout_editor_absoluteX="36dp"
-        tools:layout_editor_absoluteY="235dp" />
+        android:layout_below="@+id/answerLabel"
+        android:autoSizeMaxTextSize="28dp"
+        android:textSize="18sp"/>
 
-    <Button
-        android:id="@+id/questionAnswerButton"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/questionAnswer"
         android:layout_marginEnd="15dp"
         android:layout_marginStart="15dp"
-        android:text="@string/answer_button"
-        tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="320dp" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/correctButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@android:color/holo_green_light"
+            android:text="@string/correctButtonText" />
+
+        <Button
+            android:id="@+id/incorrectButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@android:color/holo_red_light"
+            android:text="@string/incorrectButtonText" />
+    </LinearLayout>
 
 </RelativeLayout>

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatImageButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +51,7 @@ public class RegisterTeamFragment extends Fragment {
 
         // Find register button and hook and event listener on it
         Button sendTeam = v.findViewById(R.id.btTeamReg);
-        Button qrCode = v.findViewById( R.id.btQRCode );
+        AppCompatImageButton qrCode = v.findViewById( R.id.btQRCode );
         qrCode.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,6 +78,8 @@ public class RegisterTeamFragment extends Fragment {
                             return;
                         }
 
+                        String status = dataSnapshot.child("status").getValue(String.class);
+
                         // Check if team can be created
                         DataSnapshot team = dataSnapshot.child("teams").child(teamName);
                         if (team.exists()) {
@@ -84,7 +87,7 @@ public class RegisterTeamFragment extends Fragment {
                             if (team.getValue().toString().equals(getPhoneId())) {
                                 // Is okay team is re-connecting
                                 setQuiz(quizId, teamName);
-                                openQuiz();
+                                openQuiz(status);
 
                             } else {
                                 // Oh no, can't have the same name :(
@@ -98,7 +101,7 @@ public class RegisterTeamFragment extends Fragment {
                             newTeamRef.setValue(getPhoneId());
 
                             setQuiz(quizId, teamName);
-                            openQuiz();
+                            openQuiz(status);
                         }
                     }
 
@@ -127,18 +130,30 @@ public class RegisterTeamFragment extends Fragment {
     }
 
     // Move over to the question activity
-    private void openQuiz() {
-        Intent answerQuestionIntent = new Intent(RegisterTeamFragment.this.getActivity(), QuestionPagerActivity.class);
-        answerQuestionIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        startActivity(answerQuestionIntent);
+    private void openQuiz(String status) {
+        Intent quizIntent;
+        if (status == null) {
+            quizIntent = new Intent(this.getActivity(), QuestionPagerActivity.class);
+        } else if (status.equals("not started")) {
+            quizIntent = new Intent(this.getActivity(), WaitActivity.class);
+        } else if (status.equals("review")) {
+            quizIntent = new Intent(this.getActivity(), ReviewPagerActivity.class);
+        } else {
+            quizIntent = new Intent(this.getActivity(), QuestionPagerActivity.class);
+        }
+
+        startActivity(quizIntent);
+        //this.getActivity().finish();
     }
 
     //move over to Qr activity and send team name over
     private void openQr(){
-        Intent QrCodeIntent = new Intent(RegisterTeamFragment.this.getActivity(), QRCodeActivity.class);
+
+         Intent QrCodeIntent = new Intent(RegisterTeamFragment.this.getActivity(), QRCodeActivity.class);
         QrCodeIntent.putExtra( "teamName", teamNameTextView.getText().toString());
         QrCodeIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(QrCodeIntent);
+
     }
 }
 

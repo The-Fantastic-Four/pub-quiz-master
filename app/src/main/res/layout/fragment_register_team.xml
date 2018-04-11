@@ -4,7 +4,7 @@
     android:id="@+id/register_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
+    android:gravity="center_horizontal">
 
 
     <TextView
@@ -17,23 +17,37 @@
         android:textSize="28sp"
         android:focusedByDefault="true" />
 
-    <EditText
-        android:id="@+id/etRoomName"
+    <RelativeLayout
+        android:id="@+id/roomNameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvTeamReg"
         android:layout_marginEnd="15dp"
-        android:layout_marginStart="15dp"
-        android:drawableStart="@drawable/ic_weekend_black_24dp"
-        android:drawablePadding="6dp"
-        android:hint="@string/room_name_hint"
-        android:inputType="text" />
+        android:layout_marginStart="15dp">
+
+        <EditText
+            android:id="@+id/etRoomName"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/btQRCode"
+            android:drawableStart="@drawable/ic_weekend_black_24dp"
+            android:drawablePadding="6dp"
+            android:hint="@string/room_name_hint"
+            android:inputType="text" />
+
+        <ImageButton
+            android:id="@+id/btQRCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_qr_code"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
 
     <EditText
         android:id="@+id/etTeamName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/etRoomName"
+        android:layout_below="@+id/roomNameLayout"
         android:layout_marginEnd="15dp"
         android:layout_marginStart="15dp"
         android:drawableStart="@drawable/ic_people_black_24dp"
@@ -49,14 +63,5 @@
         android:layout_marginEnd="15dp"
         android:layout_marginStart="15dp"
         android:hint="@string/registerButton"/>
-
-    <Button
-        android:id="@+id/btQRCode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/tvTeamReg"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="69dp"
-        android:text="@string/qrCodeButton" />
 
 </RelativeLayout>

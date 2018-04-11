@@ -148,10 +148,12 @@ public class RegisterTeamFragment extends Fragment {
 
     //move over to Qr activity and send team name over
     private void openQr(){
-        Intent QrCodeIntent = new Intent(RegisterTeamFragment.this.getActivity(), QRCodeActivity.class);
+
+         Intent QrCodeIntent = new Intent(RegisterTeamFragment.this.getActivity(), QRCodeActivity.class);
         QrCodeIntent.putExtra( "teamName", teamNameTextView.getText().toString());
         QrCodeIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(QrCodeIntent);
+
     }
 }
 

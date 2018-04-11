@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -16,6 +17,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import is.hi.hbv601.pubquiz.model.Question;
 import is.hi.hbv601.pubquiz.model.QuizHolder;
@@ -32,6 +34,7 @@ public class QuestionFragment extends Fragment {
     private TextView questionText;
     private EditText questionAnswer;
     private Button questionAnswerButton;
+    private ImageView imageView;
 
     private String firebaseAnswer = "";
 
@@ -46,6 +49,7 @@ public class QuestionFragment extends Fragment {
         questionAnswer = v.findViewById(R.id.questionAnswer);
         questionText = v.findViewById(R.id.questionText);
         questionAnswerButton = v.findViewById(R.id.questionAnswerButton);
+        imageView = v.findViewById( R.id.picture_view );
 
         // Set and event for the answer question button
         questionAnswerButton.setOnClickListener( new View.OnClickListener() {
@@ -94,7 +98,7 @@ public class QuestionFragment extends Fragment {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
-            }
+             }
         });
 
         // Listen to answers
@@ -123,9 +127,17 @@ public class QuestionFragment extends Fragment {
         if (question == null || !isAdded())
             return;
 
-        if (questionText != null && !question.getType().equals("blank")) {
+        if (questionText != null && question.getType().equals("text")) {
             questionText.setText(question.getQuestion());
-        } else {
+            imageView.setVisibility( View.GONE );
+        } else if(question.getType().equals("picture")){
+            imageView.setVisibility(View.VISIBLE);
+            String url = question.getQuestion();
+            //String url = "http://i.imgur.com/DvpvklR.png";
+            Picasso.get().load( url ).into( imageView );
+           // questionText.setText("thetta er mynd");
+
+        }else{
             // If either the text is null or it is a blank question show an empty string
             questionText.setText("");
         }

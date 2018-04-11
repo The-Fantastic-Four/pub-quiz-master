@@ -41,7 +41,6 @@
         <activity
             android:name=".WaitActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".AboutActivity"
             android:theme="@style/AppTheme.NoActionBar" />

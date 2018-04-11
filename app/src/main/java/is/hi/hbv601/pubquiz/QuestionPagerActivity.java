@@ -50,6 +50,7 @@ public class QuestionPagerActivity extends AppCompatActivity {
             @Override
             public Fragment getItem(int position) {
                 QuestionReference question = questions.get(position);
+
                 QuestionFragment cf = new QuestionFragment();
                 cf.setQuestion(question.getQuestionId(), question.getQuestionNumber());
                 return cf;

@@ -31,4 +31,5 @@
     <string name="appHeader">pubQuiz</string>
     <string name="waitText">Vinsamlegast bíðið\npubQuiz hefst innan skamms</string>
     <string name="aboutText">pubQuiz er búið til af "The Fantastic Four" fyrir Hugbúnaðarverkefni 2 HBV601G í Háskóla Íslands.\n\nÞakkir:\nAnimation icon \'ninja\' is provided by loading.io\n\nIcons made by Vaadin from www.flaticon.com is licenced by CC 3.0.</string>
+    <string name="title_activity_scoreboard">ScoreboardActivity</string>
 </resources>

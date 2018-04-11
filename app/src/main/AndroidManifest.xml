@@ -44,6 +44,9 @@
         <activity
             android:name=".AboutActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ScoreboardActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"

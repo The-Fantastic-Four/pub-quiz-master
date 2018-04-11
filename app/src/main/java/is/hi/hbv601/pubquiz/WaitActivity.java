@@ -50,6 +50,10 @@ public class WaitActivity extends AppCompatActivity {
                     Intent nextIntent = new Intent(WaitActivity.this, ReviewPagerActivity.class);
                     startActivity(nextIntent);
                     WaitActivity.this.finish();
+                } else if (status.equals("finished")) {
+                    Intent nextIntent = new Intent(WaitActivity.this, ScoreboardActivity.class);
+                    startActivity(nextIntent);
+                    WaitActivity.this.finish();
                 }
             }
 

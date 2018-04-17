@@ -31,6 +31,7 @@ import java.util.Set;
 
 import is.hi.hbv601.pubquiz.model.QuizHolder;
 import is.hi.hbv601.pubquiz.model.Score;
+import is.hi.hbv601.pubquiz.utils.QuizIntent;
 
 public class ScoreboardActivity extends Activity {
 
@@ -58,20 +59,10 @@ public class ScoreboardActivity extends Activity {
                 if (status == null)
                     return;
 
-                if (status.equals("not started")) {
-                    Intent nextIntent = new Intent(ScoreboardActivity.this, WaitActivity.class);
+                Intent nextIntent = QuizIntent.fromStatus(status, ScoreboardActivity.this);
+                if (nextIntent != null) {
                     startActivity(nextIntent);
                     ScoreboardActivity.this.finish();
-                } else if (status.equals("in progress")) {
-                    Intent nextIntent = new Intent(ScoreboardActivity.this, QuestionPagerActivity.class);
-                    startActivity(nextIntent);
-                    ScoreboardActivity.this.finish();
-                } else if (status.equals("review")) {
-                    Intent nextIntent = new Intent(ScoreboardActivity.this, ReviewPagerActivity.class);
-                    startActivity(nextIntent);
-                    ScoreboardActivity.this.finish();
-                } else if (status.equals("finished")) {
-                    // Do nothing, it is this activity
                 }
             }
 

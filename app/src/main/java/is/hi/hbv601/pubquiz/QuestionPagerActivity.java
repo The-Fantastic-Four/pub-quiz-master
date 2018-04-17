@@ -24,6 +24,7 @@ import java.util.List;
 
 import is.hi.hbv601.pubquiz.model.QuestionReference;
 import is.hi.hbv601.pubquiz.model.QuizHolder;
+import is.hi.hbv601.pubquiz.utils.QuizIntent;
 
 /**
  * Activity for the user to scroll through the questions in the quiz
@@ -135,18 +136,8 @@ public class QuestionPagerActivity extends AppCompatActivity {
                 if (status == null)
                     return;
 
-                if (status.equals("not started")) {
-                    Intent nextIntent = new Intent(QuestionPagerActivity.this, WaitActivity.class);
-                    startActivity(nextIntent);
-                    QuestionPagerActivity.this.finish();
-                } else if (status.equals("in progress")) {
-                    // Do nothing, it is this activity
-                } else if (status.equals("review")) {
-                    Intent nextIntent = new Intent(QuestionPagerActivity.this, ReviewPagerActivity.class);
-                    startActivity(nextIntent);
-                    QuestionPagerActivity.this.finish();
-                } else if (status.equals("finished")) {
-                    Intent nextIntent = new Intent(QuestionPagerActivity.this, ScoreboardActivity.class);
+                Intent nextIntent = QuizIntent.fromStatus(status, QuestionPagerActivity.this);
+                if (nextIntent != null) {
                     startActivity(nextIntent);
                     QuestionPagerActivity.this.finish();
                 }

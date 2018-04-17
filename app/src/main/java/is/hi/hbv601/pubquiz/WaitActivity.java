@@ -11,6 +11,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import is.hi.hbv601.pubquiz.model.QuizHolder;
+import is.hi.hbv601.pubquiz.utils.QuizIntent;
 import is.hi.hbv601.pubquiz.view.GifImageView;
 
 /***
@@ -40,18 +41,8 @@ public class WaitActivity extends AppCompatActivity {
                 if (status == null)
                     return;
 
-                if (status.equals("not started")) {
-                    // Do nothing, it is this activity
-                } else if (status.equals("in progress")) {
-                    Intent nextIntent = new Intent(WaitActivity.this, QuestionPagerActivity.class);
-                    startActivity(nextIntent);
-                    WaitActivity.this.finish();
-                } else if (status.equals("review")) {
-                    Intent nextIntent = new Intent(WaitActivity.this, ReviewPagerActivity.class);
-                    startActivity(nextIntent);
-                    WaitActivity.this.finish();
-                } else if (status.equals("finished")) {
-                    Intent nextIntent = new Intent(WaitActivity.this, ScoreboardActivity.class);
+                Intent nextIntent = QuizIntent.fromStatus(status, WaitActivity.this);
+                if (nextIntent != null) {
                     startActivity(nextIntent);
                     WaitActivity.this.finish();
                 }

@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 
+import is.hi.hbv601.pubquiz.handler.QuizStatusHandler;
 import is.hi.hbv601.pubquiz.model.QuizHolder;
 import is.hi.hbv601.pubquiz.model.Score;
 import is.hi.hbv601.pubquiz.utils.QuizIntent;
@@ -37,6 +38,8 @@ public class ScoreboardActivity extends Activity {
 
     private RecyclerView scoreboardView;
     private ScoreAdapter scoreAdapter;
+
+    QuizStatusHandler quizStatusHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,8 @@ public class ScoreboardActivity extends Activity {
         final QuizHolder quiz = QuizHolder.getInstance();
 
         // Switch to another activity if the quiz status changes
+        quizStatusHandler = new QuizStatusHandler(quiz.getQuizId(), this);
+        /*
         Query currentState = FirebaseDatabase.getInstance().getReference("quizzes/" + quiz.getQuizId() + "/status");
         currentState.addValueEventListener(new ValueEventListener() {
             @Override
@@ -71,6 +76,7 @@ public class ScoreboardActivity extends Activity {
 
             }
         });
+        */
 
         // Switch to another activity if the quiz status changes
         Query quizAnswers = FirebaseDatabase.getInstance().getReference("answers/" + quiz.getQuizId());

@@ -23,6 +23,7 @@ import java.util.List;
 
 import is.hi.hbv601.pubquiz.model.QuestionReference;
 import is.hi.hbv601.pubquiz.model.QuizHolder;
+import is.hi.hbv601.pubquiz.utils.QuizIntent;
 
 /**
  * Activity for the user to review answers given by another team
@@ -148,18 +149,8 @@ public class ReviewPagerActivity extends AppCompatActivity {
                 if (status == null)
                     return;
 
-                if (status.equals("not started")) {
-                    Intent nextIntent = new Intent(ReviewPagerActivity.this, WaitActivity.class);
-                    startActivity(nextIntent);
-                    ReviewPagerActivity.this.finish();
-                } else if (status.equals("in progress")) {
-                    Intent nextIntent = new Intent(ReviewPagerActivity.this, QuestionPagerActivity.class);
-                    startActivity(nextIntent);
-                    ReviewPagerActivity.this.finish();
-                } else if (status.equals("review")) {
-                    // Do nothing, it is this activity
-                } else if (status.equals("finished")) {
-                    Intent nextIntent = new Intent(ReviewPagerActivity.this, ScoreboardActivity.class);
+                Intent nextIntent = QuizIntent.fromStatus(status, ReviewPagerActivity.this);
+                if (nextIntent != null) {
                     startActivity(nextIntent);
                     ReviewPagerActivity.this.finish();
                 }

@@ -54,29 +54,6 @@ public class ScoreboardActivity extends Activity {
 
         // Switch to another activity if the quiz status changes
         quizStatusHandler = new QuizStatusHandler(quiz.getQuizId(), this);
-        /*
-        Query currentState = FirebaseDatabase.getInstance().getReference("quizzes/" + quiz.getQuizId() + "/status");
-        currentState.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String status = dataSnapshot.getValue(String.class);
-
-                if (status == null)
-                    return;
-
-                Intent nextIntent = QuizIntent.fromStatus(status, ScoreboardActivity.this);
-                if (nextIntent != null) {
-                    startActivity(nextIntent);
-                    ScoreboardActivity.this.finish();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        */
 
         // Switch to another activity if the quiz status changes
         Query quizAnswers = FirebaseDatabase.getInstance().getReference("answers/" + quiz.getQuizId());

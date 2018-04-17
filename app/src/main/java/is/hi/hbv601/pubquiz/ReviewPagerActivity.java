@@ -21,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import is.hi.hbv601.pubquiz.handler.QuizStatusHandler;
 import is.hi.hbv601.pubquiz.model.QuestionReference;
 import is.hi.hbv601.pubquiz.model.QuizHolder;
 import is.hi.hbv601.pubquiz.utils.QuizIntent;
@@ -33,6 +34,8 @@ public class ReviewPagerActivity extends AppCompatActivity {
 
     private ViewPager reviewViewPager;
     private List<QuestionReference> questions;
+
+    QuizStatusHandler quizStatusHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,6 +143,8 @@ public class ReviewPagerActivity extends AppCompatActivity {
         });
 
         // Switch to another activity if the quiz status changes
+        quizStatusHandler = new QuizStatusHandler(quiz.getQuizId(), this);
+        /*
         Query currentState = FirebaseDatabase.getInstance().getReference("quizzes/" + quiz.getQuizId() + "/status");
         currentState.addValueEventListener(new ValueEventListener() {
             @Override
@@ -161,6 +166,7 @@ public class ReviewPagerActivity extends AppCompatActivity {
 
             }
         });
+        */
     }
 
     @Override

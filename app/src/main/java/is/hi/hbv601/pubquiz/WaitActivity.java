@@ -10,6 +10,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import is.hi.hbv601.pubquiz.handler.QuizStatusHandler;
 import is.hi.hbv601.pubquiz.model.QuizHolder;
 import is.hi.hbv601.pubquiz.utils.QuizIntent;
 import is.hi.hbv601.pubquiz.view.GifImageView;
@@ -19,6 +20,8 @@ import is.hi.hbv601.pubquiz.view.GifImageView;
  * Created by viktoralex 04.04.2018
  */
 public class WaitActivity extends AppCompatActivity {
+
+    QuizStatusHandler quizStatusHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,8 @@ public class WaitActivity extends AppCompatActivity {
         final QuizHolder quiz = QuizHolder.getInstance();
 
         // Switch to another activity if the quiz status changes
+        quizStatusHandler = new QuizStatusHandler(quiz.getQuizId(), this);
+        /*
         Query currentState = FirebaseDatabase.getInstance().getReference("quizzes/" + quiz.getQuizId() + "/status");
         currentState.addValueEventListener(new ValueEventListener() {
             @Override
@@ -53,5 +58,6 @@ public class WaitActivity extends AppCompatActivity {
 
             }
         });
+        */
     }
 }

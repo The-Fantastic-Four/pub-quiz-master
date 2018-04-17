@@ -131,29 +131,6 @@ public class QuestionPagerActivity extends AppCompatActivity {
 
         // Switch to another activity if the quiz status changes
         quizStatusHandler = new QuizStatusHandler(quiz.getQuizId(), this);
-        /*
-        Query currentState = FirebaseDatabase.getInstance().getReference("quizzes/" + quiz.getQuizId() + "/status");
-        currentState.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String status = dataSnapshot.getValue(String.class);
-
-                if (status == null)
-                    return;
-
-                Intent nextIntent = QuizIntent.fromStatus(status, QuestionPagerActivity.this);
-                if (nextIntent != null) {
-                    startActivity(nextIntent);
-                    QuestionPagerActivity.this.finish();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        */
     }
 
     // Stops back function of back button and changes it to exit if pressed twice.

@@ -1,4 +1,4 @@
-package is.hi.hbv601.pubquiz;
+package is.hi.hbv601.pubquiz.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,6 +15,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import is.hi.hbv601.pubquiz.R;
 import is.hi.hbv601.pubquiz.fragment.AnswerListenerFragment;
 import is.hi.hbv601.pubquiz.fragment.QuestionListernerFragment;
 import is.hi.hbv601.pubquiz.handler.AnswerHandler;

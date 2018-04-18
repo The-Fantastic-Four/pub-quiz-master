@@ -1,4 +1,4 @@
-package is.hi.hbv601.pubquiz;
+package is.hi.hbv601.pubquiz.activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +10,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import is.hi.hbv601.pubquiz.R;
 import is.hi.hbv601.pubquiz.handler.QuizStatusHandler;
 import is.hi.hbv601.pubquiz.model.QuizHolder;
 import is.hi.hbv601.pubquiz.utils.QuizIntent;

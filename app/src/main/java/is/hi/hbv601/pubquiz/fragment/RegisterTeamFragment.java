@@ -1,4 +1,4 @@
-package is.hi.hbv601.pubquiz;
+package is.hi.hbv601.pubquiz.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +18,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import is.hi.hbv601.pubquiz.R;
+import is.hi.hbv601.pubquiz.activity.QRCodeActivity;
+import is.hi.hbv601.pubquiz.activity.QuestionPagerActivity;
+import is.hi.hbv601.pubquiz.activity.ReviewPagerActivity;
+import is.hi.hbv601.pubquiz.activity.ScoreboardActivity;
+import is.hi.hbv601.pubquiz.activity.WaitActivity;
 import is.hi.hbv601.pubquiz.model.QuizHolder;
 
 /**

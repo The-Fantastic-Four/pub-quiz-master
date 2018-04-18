@@ -1,13 +1,10 @@
-package is.hi.hbv601.pubquiz;
+package is.hi.hbv601.pubquiz.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -18,21 +15,16 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Set;
 
+import is.hi.hbv601.pubquiz.R;
 import is.hi.hbv601.pubquiz.handler.QuizStatusHandler;
 import is.hi.hbv601.pubquiz.model.QuizHolder;
 import is.hi.hbv601.pubquiz.model.Score;
-import is.hi.hbv601.pubquiz.utils.QuizIntent;
 
 public class ScoreboardActivity extends Activity {
 

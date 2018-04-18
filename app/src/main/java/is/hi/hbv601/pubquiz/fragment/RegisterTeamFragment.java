@@ -25,6 +25,7 @@ import is.hi.hbv601.pubquiz.activity.ReviewPagerActivity;
 import is.hi.hbv601.pubquiz.activity.ScoreboardActivity;
 import is.hi.hbv601.pubquiz.activity.WaitActivity;
 import is.hi.hbv601.pubquiz.model.QuizHolder;
+import is.hi.hbv601.pubquiz.utils.QuizIntent;
 
 /**
  * Fragment for the teams to register into a quiz
@@ -137,22 +138,11 @@ public class RegisterTeamFragment extends Fragment {
 
     // Move over to the question activity
     private void openQuiz(String status) {
-        Intent quizIntent;
-        if (status == null) {
-            quizIntent = new Intent(this.getActivity(), QuestionPagerActivity.class);
-        } else if (status.equals("not started")) {
-            quizIntent = new Intent(this.getActivity(), WaitActivity.class);
-        } else if (status.equals("review")) {
-            quizIntent = new Intent(this.getActivity(), ReviewPagerActivity.class);
-        } else if (status.equals("in progress")) {
-            quizIntent = new Intent(this.getActivity(), QuestionPagerActivity.class);
-        } else if (status.equals("finished")) {
-            quizIntent = new Intent(this.getActivity(), ScoreboardActivity.class);
-        } else {
-            quizIntent = new Intent(this.getActivity(), WaitActivity.class);
-        }
+        Intent quizIntent = QuizIntent.fromStatus(status, this.getActivity());
 
-        startActivity(quizIntent);
+        if (quizIntent != null) {
+            startActivity(quizIntent);
+        }
         //this.getActivity().finish();
     }
 

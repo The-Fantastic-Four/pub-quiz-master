@@ -6,15 +6,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import is.hi.hbv601.pubquiz.fragment.QuestionListernerFragment;
+import is.hi.hbv601.pubquiz.fragment.QuestionListenerFragment;
 import is.hi.hbv601.pubquiz.model.Question;
 
 public class QuestionHandler {
-    private QuestionListernerFragment fragment;
+    private QuestionListenerFragment fragment;
     private String questionId;
     private long questionNumber;
 
-    public QuestionHandler(String questionId, long questionNumber, QuestionListernerFragment fragment)
+    public QuestionHandler(String questionId, long questionNumber, QuestionListenerFragment fragment)
     {
         this.fragment = fragment;
         this.questionId = questionId;

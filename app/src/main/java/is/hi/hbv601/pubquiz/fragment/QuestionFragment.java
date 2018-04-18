@@ -23,7 +23,7 @@ import is.hi.hbv601.pubquiz.model.QuizHolder;
  * Fragment for showing the user to read and answer a question
  * Created by viktoralex on 14.3.2018.
  */
-public class QuestionFragment extends Fragment implements AnswerListenerFragment, QuestionListernerFragment {
+public class QuestionFragment extends Fragment implements AnswerListenerFragment, QuestionListenerFragment {
 
     private Question question;
 

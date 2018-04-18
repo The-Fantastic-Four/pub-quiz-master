@@ -141,9 +141,10 @@ public class RegisterTeamFragment extends Fragment {
         Intent quizIntent = QuizIntent.fromStatus(status, this.getActivity());
 
         if (quizIntent != null) {
+            quizIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(quizIntent);
+            this.getActivity().finish();
         }
-        //this.getActivity().finish();
     }
 
     //move over to Qr activity and send team name over

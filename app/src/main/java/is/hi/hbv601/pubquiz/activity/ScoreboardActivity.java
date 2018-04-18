@@ -1,7 +1,9 @@
 package is.hi.hbv601.pubquiz.activity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.Activity;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -98,6 +100,22 @@ public class ScoreboardActivity extends Activity {
     private void updateUI(List<Score> scores) {
         scoreAdapter = new ScoreAdapter(scores);
         scoreboardView.setAdapter(scoreAdapter);
+    }
+
+    // Stops back function of back button and changes it to exit if pressed twice.
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle(getResources().getString(R.string.quit_quiz_dialog_title))
+                .setMessage(getResources().getString(R.string.quit_quiz_dialog_text))
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        ScoreboardActivity.super.onBackPressed();
+                        ScoreboardActivity.this.finish();
+                    }
+                }).create().show();
     }
 
     private class ScoreHolder extends RecyclerView.ViewHolder {

@@ -32,6 +32,7 @@ public class QuizStatusHandler {
 
             Intent nextIntent = QuizIntent.fromStatus(status, activityInstance);
             if (nextIntent != null) {
+                nextIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 activityInstance.startActivity(nextIntent);
                 activityInstance.finish();
             }

@@ -19,6 +19,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import is.hi.hbv601.pubquiz.fragment.AnswerListenerFragment;
+import is.hi.hbv601.pubquiz.fragment.QuestionListernerFragment;
+import is.hi.hbv601.pubquiz.handler.AnswerHandler;
+import is.hi.hbv601.pubquiz.handler.QuestionHandler;
+import is.hi.hbv601.pubquiz.model.Answer;
 import is.hi.hbv601.pubquiz.model.Question;
 import is.hi.hbv601.pubquiz.model.QuizHolder;
 
@@ -26,15 +31,17 @@ import is.hi.hbv601.pubquiz.model.QuizHolder;
  * Fragment for showing the user to read and answer a question
  * Created by viktoralex on 14.3.2018.
  */
-public class QuestionFragment extends Fragment {
+public class QuestionFragment extends Fragment implements AnswerListenerFragment, QuestionListernerFragment {
 
     private Question question;
 
     private TextView questionNumber;
     private TextView questionText;
     private EditText questionAnswer;
-    private Button questionAnswerButton;
     private ImageView imageView;
+
+    private QuestionHandler questionHandler;
+    private AnswerHandler answerHandler;
 
     private String firebaseAnswer = "";
 
@@ -48,11 +55,11 @@ public class QuestionFragment extends Fragment {
         questionNumber = v.findViewById(R.id.questionNumber);
         questionAnswer = v.findViewById(R.id.questionAnswer);
         questionText = v.findViewById(R.id.questionText);
-        questionAnswerButton = v.findViewById(R.id.questionAnswerButton);
+        Button questionAnswerButton = v.findViewById(R.id.questionAnswerButton);
         imageView = v.findViewById( R.id.picture_view );
 
         // Set and event for the answer question button
-        questionAnswerButton.setOnClickListener( new View.OnClickListener() {
+        questionAnswerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 QuizHolder quiz = QuizHolder.getInstance();
@@ -78,47 +85,23 @@ public class QuestionFragment extends Fragment {
     public void setQuestion(final String questionId, final long questionNumber)
     {
         // Listen to question
-        DatabaseReference questionRef = FirebaseDatabase.getInstance().getReference("questions/" + questionId);
-        questionRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Update the question if it changes
-                Question q = dataSnapshot.getValue(Question.class);
-                if (q != null) {
-                    q.setQuestionId(questionId);
-                    q.setNumber(questionNumber);
-                }
-
-                question = q;
-
-                // Update the view if the view items have been set
-                updateView();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-             }
-        });
+        questionHandler = new QuestionHandler(questionId, questionNumber, this);
 
         // Listen to answers
         QuizHolder quiz = QuizHolder.getInstance();
-        DatabaseReference answerRef = FirebaseDatabase.getInstance().getReference("answers/" + quiz.getQuizId() + "/" + questionId + "/" + quiz.getTeamName() + "/answer");
-        answerRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Set the answer string
-                firebaseAnswer = dataSnapshot.getValue(String.class);
+        answerHandler = new AnswerHandler(questionId, quiz.getQuizId(), quiz.getTeamName(), this);
+    }
 
-                // Update the view if the view items have been set
-                updateView();
-            }
+    @Override
+    public void updateAnswer(String answer, Boolean isCorrect) {
+        this.firebaseAnswer = answer;
+        updateView();
+    }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+    @Override
+    public void updateQuestion(Question question) {
+        this.question = question;
+        updateView();
     }
 
     // Update the view (set the question text etc.) if the question and the view items have been loaded
@@ -152,5 +135,4 @@ public class QuestionFragment extends Fragment {
             questionAnswer.setText(firebaseAnswer);
         }
     }
-
 }

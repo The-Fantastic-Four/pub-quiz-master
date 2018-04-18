@@ -1,7 +1,6 @@
-package is.hi.hbv601.pubquiz;
+package is.hi.hbv601.pubquiz.activity;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -22,10 +21,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import is.hi.hbv601.pubquiz.fragment.QuestionFragment;
+import is.hi.hbv601.pubquiz.R;
 import is.hi.hbv601.pubquiz.handler.QuizStatusHandler;
 import is.hi.hbv601.pubquiz.model.QuestionReference;
 import is.hi.hbv601.pubquiz.model.QuizHolder;
-import is.hi.hbv601.pubquiz.utils.QuizIntent;
 
 /**
  * Activity for the user to scroll through the questions in the quiz

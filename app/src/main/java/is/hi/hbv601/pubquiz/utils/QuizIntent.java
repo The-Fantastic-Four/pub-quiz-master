@@ -3,10 +3,10 @@ package is.hi.hbv601.pubquiz.utils;
 import android.app.Activity;
 import android.content.Intent;
 
-import is.hi.hbv601.pubquiz.QuestionPagerActivity;
-import is.hi.hbv601.pubquiz.ReviewPagerActivity;
-import is.hi.hbv601.pubquiz.ScoreboardActivity;
-import is.hi.hbv601.pubquiz.WaitActivity;
+import is.hi.hbv601.pubquiz.activity.QuestionPagerActivity;
+import is.hi.hbv601.pubquiz.activity.ReviewPagerActivity;
+import is.hi.hbv601.pubquiz.activity.ScoreboardActivity;
+import is.hi.hbv601.pubquiz.activity.WaitActivity;
 
 public class QuizIntent {
     public static Intent fromStatus(String status, Activity activity) {

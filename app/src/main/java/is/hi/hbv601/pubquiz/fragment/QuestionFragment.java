@@ -1,7 +1,6 @@
-package is.hi.hbv601.pubquiz;
+package is.hi.hbv601.pubquiz.fragment;
 
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,18 +11,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import is.hi.hbv601.pubquiz.fragment.AnswerListenerFragment;
-import is.hi.hbv601.pubquiz.fragment.QuestionListernerFragment;
+import is.hi.hbv601.pubquiz.R;
+import is.hi.hbv601.pubquiz.activity.QuestionPagerActivity;
 import is.hi.hbv601.pubquiz.handler.AnswerHandler;
 import is.hi.hbv601.pubquiz.handler.QuestionHandler;
-import is.hi.hbv601.pubquiz.model.Answer;
 import is.hi.hbv601.pubquiz.model.Question;
 import is.hi.hbv601.pubquiz.model.QuizHolder;
 

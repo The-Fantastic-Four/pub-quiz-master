@@ -1,4 +1,4 @@
-package is.hi.hbv601.pubquiz;
+package is.hi.hbv601.pubquiz.activity;
 
 import android.Manifest;
 import android.content.Intent;
@@ -16,6 +16,8 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
+
+import is.hi.hbv601.pubquiz.R;
 
 /**
  * QrCode activity

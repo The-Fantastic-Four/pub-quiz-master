@@ -30,7 +30,6 @@
         android:maxWidth="270dp"
         android:scaleType="fitCenter" />
 
-
     <TextView
         android:id="@+id/questionText"
         android:layout_width="match_parent"

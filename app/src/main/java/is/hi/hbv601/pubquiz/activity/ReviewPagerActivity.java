@@ -21,6 +21,7 @@ import java.util.List;
 
 import is.hi.hbv601.pubquiz.R;
 import is.hi.hbv601.pubquiz.fragment.ReviewFragment;
+import is.hi.hbv601.pubquiz.handler.QuestionPageHandler;
 import is.hi.hbv601.pubquiz.handler.QuizStatusHandler;
 import is.hi.hbv601.pubquiz.model.QuestionReference;
 import is.hi.hbv601.pubquiz.model.QuizHolder;
@@ -111,28 +112,7 @@ public class ReviewPagerActivity extends AppCompatActivity {
                 });
 
                 // Switch to the current question if it changes
-                Query currentQuestion = FirebaseDatabase.getInstance().getReference("quizzes/" + quiz.getQuizId() + "/currentQuestion");
-                currentQuestion.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        int currentQuestion = dataSnapshot.getValue(Integer.class);
-
-                        Toast.makeText(ReviewPagerActivity.this,
-                                String.format(
-                                        getResources().getString(R.string.question_switch_toast),
-                                        currentQuestion),
-                                Toast.LENGTH_SHORT).show();
-
-                        // Decrease by one so that we don't look like such nerds
-                        // (currentQuestion is not zero indexed, item number is)
-                        reviewViewPager.setCurrentItem(currentQuestion - 1, true);
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
+                new QuestionPageHandler(quiz.getQuizId(), reviewViewPager);
             }
 
             @Override

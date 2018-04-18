@@ -15,6 +15,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import is.hi.hbv601.pubquiz.fragment.AnswerListenerFragment;
+import is.hi.hbv601.pubquiz.fragment.QuestionListernerFragment;
+import is.hi.hbv601.pubquiz.handler.AnswerHandler;
+import is.hi.hbv601.pubquiz.handler.QuestionHandler;
 import is.hi.hbv601.pubquiz.model.Question;
 import is.hi.hbv601.pubquiz.model.QuizHolder;
 
@@ -23,7 +27,7 @@ import is.hi.hbv601.pubquiz.model.QuizHolder;
  * Fragment for asking the user to review another teams answer
  * Created by viktoralex 03.04.2018
  */
-public class ReviewFragment extends Fragment {
+public class ReviewFragment extends Fragment implements QuestionListernerFragment, AnswerListenerFragment {
 
     private Question question;
     private String reviewTeamName;
@@ -33,6 +37,9 @@ public class ReviewFragment extends Fragment {
     private TextView questionAnswer;
     private Button correctAnswerButton;
     private Button incorrectAnswerButton;
+
+    private QuestionHandler questionHandler;
+    private AnswerHandler answerHandler;
 
     private String answer = "";
     private Boolean isCorrect;
@@ -93,48 +100,24 @@ public class ReviewFragment extends Fragment {
         reviewTeamName = teamName;
 
         // Listen to question
-        DatabaseReference questionRef = FirebaseDatabase.getInstance().getReference("questions/" + questionId);
-        questionRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Update the question if it changes
-                Question q = dataSnapshot.getValue(Question.class);
-                if (q != null) {
-                    q.setQuestionId(questionId);
-                    q.setNumber(questionNumber);
-                }
-
-                question = q;
-
-                // Update the view if the view items have been set
-                updateView();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        questionHandler = new QuestionHandler(questionId, questionNumber, this);
 
         // Listen to answers
         QuizHolder quiz = QuizHolder.getInstance();
-        DatabaseReference answerRef = FirebaseDatabase.getInstance().getReference("answers/" + quiz.getQuizId() + "/" + questionId + "/" + teamName + "/");
-        answerRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Set the answer string
-                answer = dataSnapshot.child("answer").getValue(String.class);
-                isCorrect = dataSnapshot.child("isCorrect").getValue(Boolean.class);
+        answerHandler = new AnswerHandler(questionId, teamName, quiz.getQuizId(), this);
+    }
 
-                // Update the view if the view items have been set
-                updateView();
-            }
+    @Override
+    public void updateAnswer(String answer, Boolean isCorrect) {
+        this.answer = answer;
+        this.isCorrect = isCorrect;
+        updateView();
+    }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+    @Override
+    public void updateQuestion(Question question) {
+        this.question = question;
+        updateView();
     }
 
     // Update the view (set the question text etc.) if the question and the view items have been loaded

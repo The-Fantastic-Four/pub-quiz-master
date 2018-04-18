@@ -19,7 +19,7 @@ import is.hi.hbv601.pubquiz.model.QuizHolder;
  * Fragment for asking the user to review another teams answer
  * Created by viktoralex 03.04.2018
  */
-public class ReviewFragment extends Fragment implements QuestionListernerFragment, AnswerListenerFragment {
+public class ReviewFragment extends Fragment implements QuestionListenerFragment, AnswerListenerFragment {
 
     private Question question;
     private String reviewTeamName;

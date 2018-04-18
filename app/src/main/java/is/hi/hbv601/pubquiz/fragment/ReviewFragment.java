@@ -7,17 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import is.hi.hbv601.pubquiz.R;
-import is.hi.hbv601.pubquiz.fragment.AnswerListenerFragment;
-import is.hi.hbv601.pubquiz.fragment.QuestionListernerFragment;
 import is.hi.hbv601.pubquiz.handler.AnswerHandler;
 import is.hi.hbv601.pubquiz.handler.QuestionHandler;
 import is.hi.hbv601.pubquiz.model.Question;
@@ -39,7 +30,6 @@ public class ReviewFragment extends Fragment implements QuestionListernerFragmen
     private Button correctAnswerButton;
     private Button incorrectAnswerButton;
 
-    private QuestionHandler questionHandler;
     private AnswerHandler answerHandler;
 
     private String answer = "";
@@ -64,9 +54,9 @@ public class ReviewFragment extends Fragment implements QuestionListernerFragmen
             public void onClick(View v) {
                 // Click again to reset
                 if (isCorrect != null && isCorrect.booleanValue() == true)
-                    setReviewAnswer(null);
+                    answerHandler.setAnswerIsCorrect(null);
                 else
-                    setReviewAnswer(true);
+                    answerHandler.setAnswerIsCorrect(true);
             }
         });
         incorrectAnswerButton.setOnClickListener( new View.OnClickListener() {
@@ -74,9 +64,9 @@ public class ReviewFragment extends Fragment implements QuestionListernerFragmen
             public void onClick(View v) {
                 // Click again to reset
                 if (isCorrect != null && isCorrect.booleanValue() == false)
-                    setReviewAnswer(null);
+                    answerHandler.setAnswerIsCorrect(null);
                 else
-                    setReviewAnswer(false);
+                    answerHandler.setAnswerIsCorrect(false);
             }
         });
 
@@ -85,27 +75,17 @@ public class ReviewFragment extends Fragment implements QuestionListernerFragmen
         return v;
     }
 
-    // Write to database whether the answer is correct or not
-    public void setReviewAnswer(Boolean isCorrect) {
-        QuizHolder quiz = QuizHolder.getInstance();
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference(
-                "answers/" + quiz.getQuizId() + "/" + question.getQuestionId() + "/" + reviewTeamName + "/isCorrect");
-
-        // Save the answer to the db
-        mDatabase.setValue(isCorrect);
-    }
-
     // Used to set which question and answer this fragment is supposed to show
     public void setReviewQuestion(final String teamName, final String questionId, final long questionNumber)
     {
         reviewTeamName = teamName;
 
         // Listen to question
-        questionHandler = new QuestionHandler(questionId, questionNumber, this);
+        new QuestionHandler(questionId, questionNumber, this);
 
         // Listen to answers
         QuizHolder quiz = QuizHolder.getInstance();
-        answerHandler = new AnswerHandler(questionId, teamName, quiz.getQuizId(), this);
+        answerHandler = new AnswerHandler(questionId, quiz.getQuizId(), teamName, this);
     }
 
     @Override

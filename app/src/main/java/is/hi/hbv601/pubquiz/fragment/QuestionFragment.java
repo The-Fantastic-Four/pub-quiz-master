@@ -10,9 +10,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import is.hi.hbv601.pubquiz.R;
@@ -35,7 +32,6 @@ public class QuestionFragment extends Fragment implements AnswerListenerFragment
     private EditText questionAnswer;
     private ImageView imageView;
 
-    private QuestionHandler questionHandler;
     private AnswerHandler answerHandler;
 
     private String firebaseAnswer = "";
@@ -57,12 +53,8 @@ public class QuestionFragment extends Fragment implements AnswerListenerFragment
         questionAnswerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                QuizHolder quiz = QuizHolder.getInstance();
-                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference(
-                        "answers/" + quiz.getQuizId() + "/" + question.getQuestionId() + "/" + quiz.getTeamName() + "/answer");
-
                 // Save the answer to the db
-                mDatabase.setValue(questionAnswer.getText().toString());
+                answerHandler.setAnswer(questionAnswer.getText().toString());
 
                 // Send the user to the next question (if there is any)
                 ((QuestionPagerActivity)QuestionFragment.this.getActivity()).nextQuestion();
@@ -74,13 +66,11 @@ public class QuestionFragment extends Fragment implements AnswerListenerFragment
         return v;
     }
 
-
-
     // Used to set which question this fragment is supposed to show
     public void setQuestion(final String questionId, final long questionNumber)
     {
         // Listen to question
-        questionHandler = new QuestionHandler(questionId, questionNumber, this);
+        new QuestionHandler(questionId, questionNumber, this);
 
         // Listen to answers
         QuizHolder quiz = QuizHolder.getInstance();

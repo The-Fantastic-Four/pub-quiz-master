@@ -21,9 +21,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import is.hi.hbv601.pubquiz.adapter.QuestionFragmentStatePagerAdapter;
 import is.hi.hbv601.pubquiz.fragment.QuestionFragment;
 import is.hi.hbv601.pubquiz.R;
 import is.hi.hbv601.pubquiz.handler.QuestionPageHandler;
+import is.hi.hbv601.pubquiz.handler.QuizQuestionHandler;
 import is.hi.hbv601.pubquiz.handler.QuizStatusHandler;
 import is.hi.hbv601.pubquiz.model.QuestionReference;
 import is.hi.hbv601.pubquiz.model.QuizHolder;
@@ -51,60 +53,13 @@ public class QuestionPagerActivity extends AppCompatActivity {
 
         // Needs to be stored so that the child event listener can reference and notify when data changes
         // References the questions list of question references
-        final FragmentStatePagerAdapter fragmentPagerAdapter = new FragmentStatePagerAdapter(fragmentManager) {
-            @Override
-            public Fragment getItem(int position) {
-                QuestionReference question = questions.get(position);
-
-                QuestionFragment cf = new QuestionFragment();
-                cf.setQuestion(question.getQuestionId(), question.getQuestionNumber());
-                return cf;
-            }
-
-            @Override
-            public int getCount() {
-                return questions.size();
-            }
-        };
+        final FragmentStatePagerAdapter fragmentPagerAdapter = new QuestionFragmentStatePagerAdapter(questions, fragmentManager);
 
         questionViewPager.setAdapter(fragmentPagerAdapter);
 
         QuizHolder quiz = QuizHolder.getInstance();
-
-        // Fetch the questions in this quiz
-        Query questionsInQuiz = FirebaseDatabase.getInstance().getReference("quizzes/" + quiz.getQuizId() + "/questions").orderByValue();
-
-        // When the questions change add to the list and let the fragment pager adapter know the
-        // data has changed
-        questionsInQuiz.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                long questionNumber = Long.parseLong(dataSnapshot.getValue().toString());
-                questions.add(new QuestionReference(dataSnapshot.getKey(), questionNumber));
-
-                fragmentPagerAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                // Not implemented
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                // Not implemented
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                // Not implemented
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Not implemented
-            }
-        });
+        // Add questions to adapter
+        new QuizQuestionHandler(quiz.getQuizId(), questions, fragmentPagerAdapter);
 
         // Switch to the current question if it changes
         new QuestionPageHandler(quiz.getQuizId(), questionViewPager);
